@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./admin-dashboard" },
+    { "path": "./portfolio-frontend" },
+    { "path": "./shared" }
+  ],
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["shared/src/*"]
+    }
+  }
+}
