@@ -1,0 +1,179 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from '../../../lib/prisma';
+import { broadcastProjectUpdate, broadcastContentRefresh } from '../../../lib/sse-utils';
+
+// GET /api/projects - Fetch all projects or featured projects
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const featured = searchParams.get('featured');
+    const limit = searchParams.get('limit');
+
+    let projects;
+    if (featured === 'true') {
+      // Get featured projects (those marked as featured or most recent ones)
+      projects = await prisma.project.findMany({
+        where: {
+          OR: [
+            { featured: true },
+            { featured: null } // Include projects where featured is not set
+          ]
+        },
+        orderBy: [
+          { featured: 'desc' }, // Featured projects first
+          { updated_at: 'desc' }
+        ],
+        take: limit ? parseInt(limit) : undefined
+      });
+    } else {
+      // Get all projects
+      projects = await prisma.project.findMany({
+        orderBy: { updated_at: 'desc' }
+      });
+    }
+
+    // Parse tags JSON string back to array for frontend
+    const formattedProjects = projects.map((project: { tags?: string | null; [key: string]: unknown }) => ({
+      ...project,
+      tags: project.tags ? JSON.parse(project.tags) : []
+    }));
+
+    return NextResponse.json(formattedProjects);
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// POST /api/projects - Create new project
+export async function POST(request: NextRequest) {
+  // Skip auth for development
+  // const session = await getServerSession(authOptions);
+  // if (!session) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
+
+  try {
+    const { title, description, image_url, github_url, live_url, tags, featured } = await request.json();
+
+    // Validate required fields
+    if (!title || !description) {
+      return NextResponse.json({ error: 'Title and description are required' }, { status: 400 });
+    }
+
+    // Convert tags array to JSON string for SQLite
+    const tagsJson = tags && Array.isArray(tags) ? JSON.stringify(tags) : '[]';
+
+    const project = await prisma.project.create({
+      data: {
+        title,
+        description,
+        image_url,
+        github_url,
+        live_url,
+        tags: tagsJson,
+        featured: featured || false
+      }
+    });
+
+    // Format the response
+    const formattedProject = {
+      ...project,
+      tags: JSON.parse(project.tags || '[]')
+    };
+
+    // Broadcast update to connected clients
+    broadcastProjectUpdate(formattedProject);
+    broadcastContentRefresh();
+
+    return NextResponse.json(formattedProject, { status: 201 });
+  } catch (error) {
+    console.error('Error creating project:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// PUT /api/projects - Update existing project
+export async function PUT(request: NextRequest) {
+  // Skip auth for development
+  // const session = await getServerSession(authOptions);
+  // if (!session) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
+
+  try {
+    const { id, title, description, image_url, github_url, live_url, tags, featured } = await request.json();
+
+    if (!id) {
+      return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
+    }
+
+    // Convert tags array to JSON string for SQLite
+    const tagsJson = tags && Array.isArray(tags) ? JSON.stringify(tags) : '[]';
+
+    const project = await prisma.project.update({
+      where: { id: parseInt(id) },
+      data: {
+        title,
+        description,
+        image_url,
+        github_url,
+        live_url,
+        tags: tagsJson,
+        featured: featured || false,
+        updated_at: new Date()
+      }
+    });
+
+    // Format the response
+    const formattedProject = {
+      ...project,
+      tags: JSON.parse(project.tags || '[]')
+    };
+
+    // Broadcast update to connected clients
+    broadcastProjectUpdate(formattedProject);
+    broadcastContentRefresh();
+
+    return NextResponse.json(formattedProject);
+  } catch (error) {
+    console.error('Error updating project:', error);
+    if (error.code === 'P2025') {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// DELETE /api/projects - Delete project
+export async function DELETE(request: NextRequest) {
+  // Skip auth for development
+  // const session = await getServerSession(authOptions);
+  // if (!session) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
+    }
+
+    await prisma.project.delete({
+      where: { id: parseInt(id) }
+    });
+
+    // Broadcast update to connected clients
+    broadcastContentRefresh();
+
+    return NextResponse.json({ message: 'Project deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    if (error.code === 'P2025') {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

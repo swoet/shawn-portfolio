@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  image_url   String?
+  github_url  String?
+  live_url    String?
+  tags        String?  // JSON string for SQLite compatibility
+  featured    Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model Video {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String?
+  video_url     String
+  thumbnail_url String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("videos")
+}
+
+model CVSection {
+  id           Int       @id @default(autoincrement())
+  section_type String    // e.g., "experience", "education", "skills", "achievements"
+  title        String
+  content      String
+  start_date   DateTime?
+  end_date     DateTime?
+  organization String?
+  location     String?
+  order        Int       @default(0)
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  @@map("cv_sections")
+}
