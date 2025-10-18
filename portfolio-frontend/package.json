@@ -1,0 +1,27 @@
+{
+  "name": "portfolio-frontend",
+  "version": "1.0.0",
+  "description": "Clean, modern portfolio website for Shawn Mutogo",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -p 3000",
+    "dev": "npx serve . -p 3000",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "audit": "lighthouse http://localhost:3000 --quiet --chrome-flags=\"--headless=new\" --output html --output-path ./lighthouse-report.html"
+  },
+  "keywords": [
+    "portfolio",
+    "web",
+    "developer"
+  ],
+  "author": "Shawn Mutogo",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.5"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.3",
+    "lighthouse": "^12.3.0",
+    "chrome-launcher": "^1.0.0"
+  }
+}

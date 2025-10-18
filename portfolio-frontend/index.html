@@ -1,0 +1,3265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shawn Mutogo: Creative Portfolio – Full Stack Developer & Blockchain Specialist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/video-gallery.css">
+    <link rel="stylesheet" href="css/case-studies.css">
+    
+    <link rel="icon" href="public/profile.jpg">
+    <!-- GSAP feature styles -->
+    <link rel="stylesheet" href="css/gsap-parallax-hero.css">
+    <link rel="stylesheet" href="css/gsap-project-breakdown.css">
+    <link rel="stylesheet" href="css/gsap-image-reveal.css">
+    <link rel="stylesheet" href="css/gsap-text-mask-video.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            padding-top: calc(20px + env(safe-area-inset-top, 0px));
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: #ff6b35;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            transition: width 0.3s ease;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        /* (search UI removed during conflict resolution) */
+        /* Focus visibility for accessibility */
+        :focus-visible {
+            outline: 2px solid #ff6b35;
+            outline-offset: 3px;
+        }
+        a, button { -webkit-tap-highlight-color: transparent; }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+
+
+
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding-left: max(0px, env(safe-area-inset-left, 0px));
+            padding-right: max(0px, env(safe-area-inset-right, 0px));
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-left {
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 50%, #f7931e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.2); }
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ff6b35;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .hero-image {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            transform: none !important;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+            z-index: 1;
+        }
+
+        /* Featured Project Section */
+        .featured-project {
+            padding: 120px 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+        }
+
+        .featured-project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+        }
+
+        .featured-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-image {
+            position: relative;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .project-info {
+            padding: 40px 0;
+        }
+
+        .project-category {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff6b35;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .project-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-description {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            color: #ffffff;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #ff6b35;
+            color: #ff6b35;
+            transform: translateY(-2px);
+        }
+
+        /* Projects Grid */
+        .projects-section {
+            padding: 120px 40px;
+            background: #0a0a0a;
+        }
+
+        .projects-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 80px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-card-image img {
+            transform: scale(1.1);
+        }
+
+        .project-card-content {
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .project-card-category {
+            font-size: 14px;
+            color: #ff6b35;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .project-card-description {
+            color: #cccccc;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .project-card-link {
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-card-link:hover {
+            color: #f7931e;
+        }
+
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+
+        .video-element {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-loading {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+            z-index: 2;
+            pointer-events: auto;
+        }
+        .video-loading.active { display: flex; }
+        .video-loading p { color: #cccccc; margin-top: 12px; font-size: 14px; }
+        .video-retry {
+            margin-top: 10px;
+            background: rgba(255, 107, 53, 0.95);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: none;
+        }
+        .video-retry:hover { background: rgba(247, 147, 30, 1); }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-container:hover .video-controls {
+            opacity: 1;
+        }
+
+        .video-controls button {
+            background: rgba(255, 107, 53, 0.9);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-controls button:hover {
+            background: rgba(255, 107, 53, 1);
+            transform: translateY(-2px);
+        }
+
+        .video-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .video-close:hover {
+            background: rgba(255, 107, 53, 0.9);
+            transform: scale(1.1);
+        }
+
+        .video-info {
+            padding: 30px;
+            color: white;
+        }
+
+        .video-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .video-description {
+            color: #cccccc;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* 3D Video Showcase Section */
+        .video-showcase {
+            padding: 120px 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+        }
+
+        .video-showcase-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 60px;
+            margin-top: 60px;
+            perspective: 1000px;
+        }
+
+        .video-card {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            will-change: transform;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(247, 147, 30, 0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-card:hover::before {
+            opacity: 1;
+        }
+
+        .video-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 28px 56px rgba(255, 107, 53, 0.25);
+        }
+
+        .video-thumbnail {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #333 0%, #222 100%);
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+            filter: brightness(1.06) contrast(1.05);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .video-card:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6);
+        }
+
+        .video-card-content {
+            padding: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .video-card-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .video-card-category {
+            font-size: 12px;
+            color: #ff6b35;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .video-card-description {
+            color: #cccccc;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .video-card-link {
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-card-link:hover {
+            color: #f7931e;
+            transform: translateX(5px);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 120px 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+        }
+
+        .about-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-text h2 {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-text p {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            position: relative;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .highlight-icon {
+            font-size: 20px;
+            color: #ff6b35;
+        }
+
+        .highlight-item span:last-child {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Books Section */
+        .books-section {
+            padding: 120px 40px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+        }
+
+        .books-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .books-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .books-subtitle {
+            font-size: clamp(18px, 3vw, 24px);
+            text-align: center;
+            margin-bottom: 80px;
+            color: #cccccc;
+            font-weight: 300;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .book-card, .poetry-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .book-card::before, .poetry-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .book-card:hover::before, .poetry-card:hover::before {
+            opacity: 1;
+        }
+
+        .book-card:hover, .poetry-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+        }
+
+        .book-icon, .poetry-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #ffffff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .book-card h3, .poetry-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ffffff;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .book-card p, .poetry-card p {
+            color: #cccccc;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .book-list {
+            position: relative;
+            z-index: 1;
+        }
+
+        .book-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 107, 53, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #ff6b35;
+        }
+
+        .book-item h4 {
+            color: #ff6b35;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .book-item p {
+            color: #cccccc;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .poetry-themes {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .poetry-themes li {
+            color: #cccccc;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .poetry-themes li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            color: #ff6b35;
+        }
+
+        .creative-philosophy {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .creative-philosophy::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(247, 147, 30, 0.05) 100%);
+        }
+
+        .creative-philosophy h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ff6b35;
+            position: relative;
+            z-index: 1;
+        }
+
+        .creative-philosophy p {
+            color: #cccccc;
+            line-height: 1.8;
+            font-size: 16px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* GitHub Projects Section */
+        .github-projects-section {
+            padding: 120px 40px 100px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+        }
+
+        .github-projects-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .github-projects-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .github-projects-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            text-align: center;
+            margin-bottom: 60px;
+            color: #cccccc;
+            font-weight: 300;
+        }
+
+        .github-last-updated {
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 12px;
+            margin-top: -40px;
+            margin-bottom: 40px;
+        }
+
+        .github-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #cccccc;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .github-repos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 0;
+        }
+
+        .repo-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .repo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(247, 147, 30, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .repo-card:hover::before {
+            opacity: 1;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.2);
+        }
+
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .repo-name {
+            color: #ff6b35;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .repo-name:hover {
+            color: #ffffff;
+        }
+
+        .repo-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .repo-description {
+            color: #cccccc;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .repo-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tech-tag {
+            background: rgba(255, 107, 53, 0.2);
+            color: #ff6b35;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .repo-links {
+            display: flex;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .repo-link {
+            color: #ff6b35;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .repo-link:hover {
+            color: #ffffff;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 60px 20px;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 107, 53, 0.2);
+            border-top: 4px solid #ff6b35;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-spinner p {
+            color: #cccccc;
+            font-size: 16px;
+        }
+
+        .github-cta {
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        /* Collapse gap after GitHub section */
+        .github-projects-section + .about-section,
+        .github-projects-section + .books-section {
+            padding-top: 20px !important;
+            margin-top: 0 !important;
+        }
+
+        /* Add breathing room before Orbiting Skills */
+        .github-projects-section + .about-3d {
+            margin-top: 80px !important; /* create a visible gap between sections */
+            padding-top: 40px !important; /* retain some internal padding for the section */
+        }
+
+        /* 3D Orbit About Section */
+        .about-3d {
+            position: relative;
+            z-index: 0;
+            padding: 0;
+            margin-top: 0;
+            background: linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.6) 60%, rgba(10,10,10,1) 100%);
+            overflow: hidden;
+            min-height: 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .about-3d-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .about-3d-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .about-3d-title {
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ff6b35;
+        }
+
+        .about-3d-subtitle {
+            font-size: clamp(16px, 2.2vw, 20px);
+            color: #cccccc;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .skills-chips {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .chip {
+            background: rgba(255, 107, 53, 0.12);
+            border: 1px solid rgba(255, 107, 53, 0.25);
+            color: #ff8a5a;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Creative Interlude Section */
+        .interlude-section {
+            position: relative;
+            z-index: 0;
+            padding: 56px 40px 96px;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.06) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(247, 147, 30, 0.06) 0%, transparent 45%),
+                        linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
+            overflow: hidden;
+        }
+
+        .interlude-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .neon-divider {
+            height: 4px;
+            width: 220px;
+            margin: 0 auto 24px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, rgba(255,107,53,0) 0%, rgba(255,107,53,1) 50%, rgba(247,147,30,0) 100%);
+            box-shadow: 0 0 24px rgba(255, 107, 53, 0.5);
+            animation: pulseGlow 2.6s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 16px rgba(255, 107, 53, 0.35); opacity: 0.9; }
+            50% { box-shadow: 0 0 36px rgba(247, 147, 30, 0.6); opacity: 1; }
+        }
+
+        .interlude-quote {
+            font-size: clamp(22px, 3.2vw, 34px);
+            line-height: 1.4;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 60%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .interlude-author {
+            color: #bbbbbb;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .floating-orb {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.18;
+            background: radial-gradient(circle, #ff6b35 0%, rgba(255, 107, 53, 0) 60%);
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .floating-orb.second {
+            right: -80px;
+            bottom: -60px;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, #f7931e 0%, rgba(247, 147, 30, 0) 60%);
+            animation-duration: 15s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+        }
+
+        /* Process Section */
+        .process-section {
+            padding: 120px 40px;
+            background: #0a0a0a;
+        }
+
+        .process-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .process-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 80px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .process-step {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .process-step:hover::before {
+            opacity: 1;
+        }
+
+        .process-step:hover {
+            transform: translateY(-10px);
+        }
+
+        .process-step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #ffffff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .process-step h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ffffff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .process-step p {
+            color: #cccccc;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 3D Process Cards Enhancements */
+        .process-grid { perspective: 1000px; }
+        .process-step[data-tilt] {
+            border: 1px solid rgba(255, 107, 53, 0.25);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.02);
+            will-change: transform;
+            transform-style: preserve-3d;
+        }
+        .process-step[data-tilt]:hover {
+            box-shadow: 0 30px 70px rgba(255, 107, 53, 0.18), inset 0 0 0 1px rgba(255,255,255,0.03);
+        }
+        .process-visual {
+            height: 160px;
+            border-radius: 14px;
+            margin: -20px -20px 16px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(80% 80% at 30% 30%, rgba(255,107,53,0.18), transparent 60%),
+                        radial-gradient(80% 80% at 70% 70%, rgba(247,147,30,0.14), transparent 60%),
+                        linear-gradient(135deg, #1c1c1c, #111);
+            transform: translateZ(50px);
+        }
+        .ring {
+            position: absolute;
+            inset: 18px;
+            border-radius: 999px;
+            background: conic-gradient(from 0deg, rgba(255,107,53,0.0), rgba(255,107,53,0.75), rgba(247,147,30,0.75), rgba(255,107,53,0.0) 75%);
+            filter: blur(0.5px);
+            animation: spinSlow 8s linear infinite;
+            opacity: 0.7;
+        }
+        .ring-2 { inset: 34px; animation-duration: 12s; opacity: 0.5; }
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff6b35, rgba(255,107,53,0));
+            filter: blur(0.3px);
+            animation: floatDot 6s ease-in-out infinite;
+        }
+        .particle.p1 { left: 12%; top: 18%; animation-duration: 7s; }
+        .particle.p2 { right: 14%; bottom: 22%; animation-duration: 5.5s; }
+        .process-step h3 { margin-top: 10px; }
+        .process-points {
+            list-style: none;
+            margin: 12px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 8px;
+        }
+        .process-points li {
+            color: #cccccc;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 22px;
+        }
+        .process-points li::before {
+            content: '▸';
+            color: #ff6b35;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        @keyframes spinSlow { to { transform: rotate(360deg); } }
+        @keyframes floatDot {
+            0%, 100% { transform: translateY(0) }
+            50% { transform: translateY(-8px) }
+        }
+        /* Disable hover lift for tilt cards (handled by JS) */
+        .process-step[data-tilt]:hover { transform: none; }
+
+        /* Resume Section */
+        .resume-section {
+            padding: 120px 40px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .resume-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(255,107,53,0.06) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(247,147,30,0.06) 0%, transparent 45%);
+        }
+        .resume-content { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+        .resume-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .resume-actions { display: flex; gap: 16px; justify-content: center; margin-bottom: 50px; }
+        .resume-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            color: #0a0a0a;
+            padding: 12px 22px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .resume-btn.secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        .resume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .resume-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 18px;
+            padding: 24px;
+            border: 1px solid rgba(255, 107, 53, 0.25);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.02);
+            transform-style: preserve-3d;
+        }
+        .resume-card h3 { color: #ff6b35; margin-bottom: 12px; font-size: 18px; letter-spacing: 1px; }
+        .resume-card p, .resume-card li, .resume-meta { color: #cccccc; }
+        .resume-list { list-style: none; padding: 0; display: grid; gap: 8px; }
+        .resume-chip-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .resume-embed {
+            width: 100%;
+            height: 420px;
+            border: none;
+            border-radius: 12px;
+            background: #111;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 120px 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+        }
+
+        .contact-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-subtitle {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .contact-item a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: #f7931e;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .social-link {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Contact 3D upgrade */
+        .contact-section { overflow: hidden; }
+        .contact-3d {
+            position: relative;
+            max-width: 900px;
+            margin: 30px auto 0;
+            padding: 10px 0 0;
+        }
+        .contact-orb {
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.22;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,107,53,0.6) 0%, rgba(255,107,53,0) 60%);
+            animation: driftOrb 16s ease-in-out infinite;
+        }
+        .contact-orb.orb-a { left: -120px; top: -80px; }
+        .contact-orb.orb-b { right: -140px; bottom: -60px; background: radial-gradient(circle, rgba(247,147,30,0.6) 0%, rgba(247,147,30,0) 60%); animation-duration: 20s; }
+        @keyframes driftOrb { 0%,100% { transform: translate(0,0) } 50% { transform: translate(20px,-18px) } }
+        .cta-card {
+            position: relative;
+            margin: 0 auto;
+            width: clamp(320px, 70%, 700px);
+            border-radius: 18px;
+            padding: 28px 24px;
+            background:
+                radial-gradient(120% 120% at 20% 0%, rgba(255,107,53,0.12), transparent 50%),
+                radial-gradient(120% 120% at 80% 100%, rgba(247,147,30,0.12), transparent 50%),
+                linear-gradient(135deg, #171717, #101010);
+            border: 1px solid rgba(255,107,53,0.25);
+            box-shadow: 0 35px 80px rgba(255,107,53,0.15), inset 0 0 0 1px rgba(255,255,255,0.03);
+            transform-style: preserve-3d;
+            will-change: transform;
+            overflow: hidden;
+        }
+        .cta-glow {
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: conic-gradient(from 0deg at 50% 50%, rgba(255,107,53,0.0), rgba(255,107,53,0.5), rgba(247,147,30,0.5), rgba(255,107,53,0.0) 80%);
+            mask: radial-gradient(circle at center, transparent 62%, black 64%);
+            -webkit-mask: radial-gradient(circle at center, transparent 62%, black 64%);
+            animation: spinRing 8s linear infinite;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        @keyframes spinRing { to { transform: rotate(360deg); } }
+        .cta-inner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            transform: translateZ(40px);
+        }
+        .cta-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: #0a0a0a;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            box-shadow: 0 14px 40px rgba(255,107,53,0.35);
+            transform: translateZ(50px);
+        }
+        .cta-btn:hover {
+            transform: translateZ(50px) translateY(-2px);
+            box-shadow: 0 18px 50px rgba(255,107,53,0.5);
+        }
+        .cta-social { display: flex; gap: 16px; }
+        .cta-social-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 24px;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(255,107,53,0.9), rgba(247,147,30,0.9));
+            border: 1px solid rgba(255,107,53,0.35);
+            box-shadow: 0 10px 24px rgba(255,107,53,0.25), inset 0 0 0 1px rgba(255,255,255,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .cta-social-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px rgba(255,107,53,0.35), inset 0 0 0 1px rgba(255,255,255,0.08);
+        }
+        @media (max-width: 768px){
+            .cta-card { width: 100%; }
+            .cta-social-btn { width: 48px; height: 48px; font-size: 20px; }
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px;
+            background: #0a0a0a;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer p {
+            color: #666666;
+            font-size: 14px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .featured-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .social-links {
+                gap: 20px;
+            }
+        }
+
+        /* Scroll Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- GSAP Sections: Parallax Hero, Breakdown, Image Reveal, Text Mask Video -->
+    <div class="main-content">
+    <section class="parallax-hero-section" aria-label="Parallax Hero">
+        <div class="parallax-hero-inner">
+            <div class="parallax-hero-orbit">
+                <div class="orbit-item" data-key="blockchain" data-fixed="true" style="left:5%; top:15%;"><img src="public/techunity-cover.webp" alt="Blockchain" loading="lazy"></div>
+                <div class="orbit-item" data-key="coding" data-fixed="true" style="right:8%; top:20%;"><img src="public/charity-cover.webp" alt="Coding" loading="lazy"></div>
+                <div class="orbit-item" data-key="cloud" style="left:12%; bottom:12%;"><img src="public/red-notice-cover.webp" alt="Cloud" loading="lazy"></div>
+                <div class="orbit-item" data-key="design" style="right:10%; bottom:10%;"><img src="public/my-image.webp" alt="Design" loading="lazy"></div>
+            </div>
+            <div class="parallax-hero-center">
+                <picture>
+                    <img src="public/profile.jpg" alt="Shawn Mutogo" loading="eager" decoding="async" onerror="this.onerror=null; this.src='public/my-image.png';" />
+                </picture>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-breakdown-section" aria-label="Project Components Breakdown">
+        <div class="breakdown-container">
+            <div class="breakdown-stage">
+                <img class="final-shot" src="public/techunity-cover.webp" alt="Final Project Shot" loading="lazy">
+                <div class="components-layer">
+                    <div class="component-item"><img src="public/charity-cover.png" alt="Charity"><div class="component-label">UI</div></div>
+                    <div class="component-item"><img src="public/red-notice-cover.png" alt="Red Notice"><div class="component-label">API</div></div>
+                    <div class="component-item"><img src="public/techunity-cover.png" alt="TechUnity"><div class="component-label">Deploy</div></div>
+                    <div class="component-item"><img src="public/my-image.png" alt="Me"><div class="component-label">Dev</div></div>
+                    <div class="component-item"><img src="public/profile.jpg" alt="Profile"><div class="component-label">CMS</div></div>
+                </div>
+            </div>
+            <ol class="breakdown-steps">
+                <li class="breakdown-step" data-key="UI">
+                    <h3>Interface You Can Feel</h3>
+                    <p>Responsive UI with motion that guides, not distracts. Built with semantic HTML, accessible patterns and buttery interactions.</p>
+                </li>
+                <li class="breakdown-step" data-key="API">
+                    <h3>Smart Contracts & APIs</h3>
+                    <p>Contract-backed flows and typed APIs. Reliability and transparency from wallet connect to payout.</p>
+                </li>
+                <li class="breakdown-step" data-key="Deploy">
+                    <h3>Global Delivery</h3>
+                    <p>Deployed on performant edges, image optimization, prefetching, and zero-downtime releases.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="build-up-reveal-section" aria-label="Build Up Image Reveal">
+        <div class="reveal-container">
+            <img class="reveal-image" src="public/red-notice-cover.webp" alt="Full UI Mockup" loading="lazy" />
+        </div>
+    </section>
+
+    <section class="text-mask-video-section" aria-label="Text Mask Video Reveal">
+        <div class="tmv-media" aria-hidden="true">
+            <!-- Fallback to poster only; source video removed to avoid 404 until provided -->
+            <img src="public/charity-cover.webp" alt="Background poster" style="width:100%;height:100%;object-fit:cover" loading="lazy" />
+        </div>
+        <div class="tmv-overlay">
+            <div class="tmv-text">BUILD WITH SHAWN</div>
+        </div>
+    </section>
+    </div>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Shawn Mutogo</a>
+            <nav class="nav">
+                <a href="#about">About</a>
+                <a href="#resume">Resume</a>
+            </nav>
+            <div class="mobile-menu">☰</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-left">
+                    <h1 class="hero-title">I AM A DIGITAL INNOVATOR<br>DRIVEN BY BLOCKCHAIN IDEAS<br>SHAPED BY CODE</h1>
+                    <h2 class="hero-subtitle">FULL STACK DEVELOPER & BLOCKCHAIN SPECIALIST</h2>
+                </div>
+                <div class="hero-image">
+                    <img src="public/profile.jpg" alt="Shawn Mutogo" loading="eager" decoding="async">
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section" id="about">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>ABOUT ME & SOMETHING MORE</h2>
+                    <h3>Hello! I am Shawn since I was born.</h3>
+                    <p>I'm a passionate 23-year-old Full Stack Developer, Blockchain specialist, and published author inspired by innovation and technology. As an ABMA CIOS graduate, I bring a unique blend of technical expertise and creative expression to every project.</p>
+                    <p>"My creative mind focuses on creating digital solutions with one purpose only: build platforms that will help people solve their problems, thanks to innovative blockchain technology and modern web development. Beyond code, I express myself through poetry and novels under my pen name Swoet Phethan."</p>
+                    <div class="about-highlights">
+                        <div class="highlight-item">
+                            <span class="highlight-icon">🎓</span>
+                            <span>ABMA CIOS Graduate</span>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-icon">📚</span>
+                            <span>Published Author (2 Novels)</span>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-icon">✍️</span>
+                            <span>Poet (Pen Name: Swoet Phethan)</span>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-icon">⚡</span>
+                            <span>Blockchain & Cloud Specialist</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary">READ MORE</a>
+                </div>
+                <div class="about-image">
+                    <img src="public/profile.jpg" alt="Shawn Mutogo" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </section>
+
+        <!-- Books & Poetry Section -->
+        <section class="books-section">
+            <div class="books-content">
+                <h2 class="books-title">AUTHOR & POET</h2>
+                <h3 class="books-subtitle">Beyond Code: Creative Expression Through Words</h3>
+                
+                <div class="books-grid">
+                    <div class="book-card">
+                        <div class="book-icon">📚</div>
+                        <h3>PUBLISHED AUTHOR</h3>
+                        <p>As <strong>Swoet Phethan</strong>, I've published two novels that explore themes of dreams, reality, and human connection:</p>
+                        <div class="book-list">
+                            <div class="book-item">
+                                <h4>"The Girl from My Dreams"</h4>
+                                <p>A captivating novel that weaves together elements of fantasy and reality, exploring the power of dreams and their impact on our waking lives.</p>
+                            </div>
+                            <div class="book-item">
+                                <h4>"The Last Origins"</h4>
+                                <p>An epic tale that delves into the mysteries of human origins and the interconnectedness of all things, blending science fiction with philosophical depth.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="poetry-card">
+                        <div class="poetry-icon">✍️</div>
+                        <h3>POETRY & CREATIVE WRITING</h3>
+                        <p>Under my pen name <strong>Swoet Phethan</strong>, I craft poetry that explores the intersection of technology, humanity, and emotion. My work often reflects on:</p>
+                        <ul class="poetry-themes">
+                            <li>Digital landscapes and human connection</li>
+                            <li>The beauty found in code and algorithms</li>
+                            <li>Dreams as portals to innovation</li>
+                            <li>The poetry of problem-solving</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="creative-philosophy">
+                    <h3>CREATIVE PHILOSOPHY</h3>
+                    <p>"I believe that creativity transcends mediums. Whether I'm writing code or poetry, building applications or crafting stories, I'm always seeking to solve problems and create meaningful connections. My technical work is informed by my creative writing, and my stories are enriched by my understanding of technology."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Project -->
+        <section class="featured-project">
+            <div class="featured-content">
+                <div class="project-image">
+                    <img src="public/techunity-cover.webp" alt="Decentralized Freelance Marketplace DApp" loading="lazy" decoding="async">
+                </div>
+                <div class="project-info">
+                    <div class="project-category">WEB3 • FREELANCE PLATFORM</div>
+                    <h2 class="project-title">Decentralized Freelance Marketplace</h2>
+                    <p class="project-description">
+                        A blockchain-powered platform connecting freelancers and clients in a secure and transparent environment. Smart contracts automate job escrow and payouts, removing intermediaries so creators earn fairly. Features include decentralized payments, contract-backed milestones, user profiles with ratings, and an auditable history on-chain.
+                    </p>
+                    <div class="project-links">
+                        <a href="https://github.com/swoet/decentralised-freelance-marketplace" target="_blank" rel="noopener noreferrer" class="btn-primary">VIEW ON GITHUB</a>
+                        <a href="#" class="btn-secondary" hidden>LIVE DEMO</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <div class="projects-content">
+                <h2 class="section-title">SELECTED PROJECTS</h2>
+                <div class="projects-grid" id="topProjects">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading top repositories...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Combined: Deployed Projects (Case Studies layout + Video animations) -->
+        <section class="case-studies" id="projects">
+            <div class="case-container">
+                <div class="case-titlebar">
+                    <h2>DEPLOYED PROJECTS</h2>
+                </div>
+                <div class="case-grid">
+                    <!-- Left card -->
+                    <article class="case-card">
+                        <div class="case-visual">
+                            <div class="video-overlay" data-video="charity-shopper"><div class="play-button"></div></div>
+                            <div class="device-fan">
+                                <div class="device-phone small p1"><picture class="device-screen"><source type="image/avif" srcset="public/charity-cover.avif"><source type="image/webp" srcset="public/charity-cover.webp"><img src="public/charity-cover.png" alt="Charity Shopper cover" loading="lazy" decoding="async"></picture></div>
+                                <div class="device-phone small p2"><picture class="device-screen"><source type="image/avif" srcset="public/charity-cover.avif"><source type="image/webp" srcset="public/charity-cover.webp"><img src="public/charity-cover.png" alt="Charity Shopper cover" loading="lazy" decoding="async"></picture></div>
+                                <div class="device-phone small p3"><picture class="device-screen"><source type="image/avif" srcset="public/charity-cover.avif"><source type="image/webp" srcset="public/charity-cover.webp"><img src="public/charity-cover.png" alt="Charity Shopper cover" loading="lazy" decoding="async"></picture></div>
+                                <div class="device-phone small p4"><picture class="device-screen"><source type="image/avif" srcset="public/charity-cover.avif"><source type="image/webp" srcset="public/charity-cover.webp"><img src="public/charity-cover.png" alt="Charity Shopper cover" loading="lazy" decoding="async"></picture></div>
+                                <div class="device-phone small p5"><picture class="device-screen"><source type="image/avif" srcset="public/charity-cover.avif"><source type="image/webp" srcset="public/charity-cover.webp"><img src="public/charity-cover.png" alt="Charity Shopper cover" loading="lazy" decoding="async"></picture></div>
+                                <div class="device-phone small p6"><picture class="device-screen"><source type="image/avif" srcset="public/charity-cover.avif"><source type="image/webp" srcset="public/charity-cover.webp"><img src="public/charity-cover.png" alt="Charity Shopper cover" loading="lazy" decoding="async"></picture></div>
+                            </div>
+                            <div class="video-particles">
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                            </div>
+                        </div>
+                        <div class="case-body">
+                            <div class="case-subtitle">E-COMMERCE • UI DESIGN</div>
+                            <div class="case-title">CHARITY SHOPPER</div>
+                            <div class="case-actions">
+                                <a class="case-btn" href="https://charity-shopper.netlify.app/" target="_blank" rel="noopener noreferrer">OPEN PROJECT</a>
+                                <a class="case-ghost" href="#" data-video="charity-shopper" rel="nofollow noopener">WATCH DEMO</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Center card (featured) -->
+                    <article class="case-card featured">
+                        <div class="case-visual">
+                            <div class="video-overlay" data-video="red-notice"><div class="play-button"></div></div>
+                            <div class="device-phone large">
+                                <picture class="device-screen">
+                                    <source type="image/avif" srcset="public/red-notice-cover.avif">
+                                    <source type="image/webp" srcset="public/red-notice-cover.webp">
+                                    <img src="public/red-notice-cover.png" alt="Red Notice cover" loading="lazy" decoding="async">
+                                </picture>
+                            </div>
+                            <div class="video-particles">
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                            </div>
+                        </div>
+                        <div class="case-body">
+                            <div class="case-subtitle">WEB APP • UI DESIGN</div>
+                            <div class="case-title">RED NOTICE</div>
+                            <div class="case-actions">
+                                <a class="case-btn" href="https://red-notice-global.netlify.app/" target="_blank" rel="noopener noreferrer">OPEN PROJECT</a>
+                                <a class="case-ghost" href="#" data-video="red-notice">WATCH DEMO</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Right card -->
+                    <article class="case-card">
+                        <div class="case-visual">
+                            <div class="video-overlay" data-video="techunity-os"><div class="play-button"></div></div>
+                            <div class="device-duo">
+                                <div class="device-phone small a"><picture class="device-screen"><source type="image/avif" srcset="public/techunity-cover.avif"><source type="image/webp" srcset="public/techunity-cover.webp"><img src="public/techunity-cover.png" alt="TechUnity Global cover" loading="lazy" decoding="async"></picture></div>
+                                <div class="device-phone small b"><picture class="device-screen"><source type="image/avif" srcset="public/techunity-cover.avif"><source type="image/webp" srcset="public/techunity-cover.webp"><img src="public/techunity-cover.png" alt="TechUnity Global cover" loading="lazy" decoding="async"></picture></div>
+                            </div>
+                            <div class="video-particles">
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                                <div class="video-particle"></div>
+                            </div>
+                        </div>
+                        <div class="case-body">
+                            <div class="case-subtitle">OS PLATFORM • UI DESIGN</div>
+                            <div class="case-title">TECHUNITY GLOBAL OS</div>
+                            <div class="case-actions">
+                                <a class="case-btn" href="https://techunity-global.netlify.app/" target="_blank" rel="noopener noreferrer">OPEN PROJECT</a>
+                                <a class="case-ghost" href="#" data-video="techunity-os" rel="nofollow noopener">WATCH DEMO</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- GitHub Projects Section -->
+        <section class="github-projects-section">
+            <div class="github-projects-content">
+                <h2 class="github-projects-title">GITHUB PORTFOLIO</h2>
+                <p class="github-projects-subtitle">Explore my open-source contributions and personal projects</p>
+                <p class="github-last-updated" id="githubLastUpdated" aria-live="polite"></p>
+                
+                <div class="github-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalRepos">Loading...</div>
+                        <div class="stat-label">Repositories</div>
+                    </div>
+                </div>
+
+                <div class="github-repos" id="githubRepos">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading repositories...</p>
+                    </div>
+                </div>
+                <div class="github-cta">
+                    <a href="https://github.com/swoet" target="_blank" rel="noopener noreferrer" class="btn-primary">VIEW ALL REPOSITORIES</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orbiting Skills 3D-like Section -->
+        <section class="about-3d">
+            <canvas id="orbitCanvas" class="about-3d-canvas" aria-hidden="true"></canvas>
+            <div class="about-3d-content">
+                <div class="about-3d-title">CREATIVE ENGINEER • WEB3 & FULL-STACK</div>
+                <div class="about-3d-subtitle">I blend decentralized tech with human-centered design. Here are a few things that orbit my craft.</div>
+                <div class="skills-chips" aria-hidden="true">
+                    <span class="chip">Solidity</span>
+                    <span class="chip">Ethers.js</span>
+                    <span class="chip">Next.js</span>
+                    <span class="chip">Node.js</span>
+                    <span class="chip">MongoDB</span>
+                    <span class="chip">IPFS</span>
+                    <span class="chip">Hardhat</span>
+                    <span class="chip">Tailwind</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creative Interlude -->
+        <section class="interlude-section">
+            <div class="floating-orb" style="left: -80px; top: -60px;"></div>
+            <div class="floating-orb second"></div>
+            <div class="interlude-content">
+                <div class="neon-divider"></div>
+                <p class="interlude-quote">"Between code and verse, I build worlds—some decentralized, some dreamt."</p>
+                <p class="interlude-author">– Shawn Mutogo</p>
+            </div>
+        </section>
+
+        
+        
+        <!-- Process Section -->
+        <section class="process-section">
+            <div class="process-content">
+                <h2 class="process-title">HOW DO I WORK?</h2>
+                <h3 class="process-title">Four steps in my process</h3>
+                <div class="process-grid">
+                    <div class="process-step" data-tilt>
+                        <div class="process-visual">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="particle p1"></div>
+                            <div class="particle p2"></div>
+                        </div>
+                        <h3>DISCOVER & ALIGN</h3>
+                        <ul class="process-points">
+                            <li>Define goals, constraints, and success metrics</li>
+                            <li>Map user journeys and real-world use-cases</li>
+                            <li>Validate Web3 feasibility and value</li>
+                        </ul>
+                    </div>
+                    <div class="process-step" data-tilt>
+                        <div class="process-visual">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="particle p1"></div>
+                            <div class="particle p2"></div>
+                        </div>
+                        <h3>ARCHITECT & PROTOTYPE</h3>
+                        <ul class="process-points">
+                            <li>Design system, data models, and smart-contract flows</li>
+                            <li>Wireframes to interactive prototypes</li>
+                            <li>Risk assessment and security-first planning</li>
+                        </ul>
+                    </div>
+                    <div class="process-step" data-tilt>
+                        <div class="process-visual">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="particle p1"></div>
+                            <div class="particle p2"></div>
+                        </div>
+                        <h3>BUILD & INTEGRATE WEB3</h3>
+                        <ul class="process-points">
+                            <li>Ship features across frontend, backend, and contracts</li>
+                            <li>Automated testing, CI/CD, and analytics hooks</li>
+                            <li>Seamless wallet, payments, and on-chain events</li>
+                        </ul>
+                    </div>
+                    <div class="process-step" data-tilt>
+                        <div class="process-visual">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="particle p1"></div>
+                            <div class="particle p2"></div>
+                        </div>
+                        <h3>LAUNCH, OBSERVE & ITERATE</h3>
+                        <ul class="process-points">
+                            <li>Deploy, monitor performance, and capture feedback</li>
+                            <li>Post-launch hardening and progressive enhancements</li>
+                            <li>Roadmap iterations driven by measurable outcomes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Section -->
+        <section class="resume-section" id="resume">
+            <div class="resume-content">
+                <h2 class="resume-title">RESUME</h2>
+                <div class="resume-actions">
+                    <a href="public/cv.pdf" target="_blank" class="resume-btn">VIEW PDF</a>
+                    <a href="public/cv.pdf" download class="resume-btn secondary">DOWNLOAD PDF</a>
+                </div>
+                <div class="resume-grid">
+                    <div class="resume-card" data-tilt>
+                        <h3>PROFILE</h3>
+                        <ul class="resume-list">
+                            <li>Full Stack Developer & Blockchain Specialist</li>
+                            <li>ABMA CIOS Graduate</li>
+                            <li>Published Author (2 Novels) • Poet (Swoet Phethan)</li>
+                            <li>Based in Zimbabwe</li>
+                        </ul>
+                    </div>
+                    <div class="resume-card" data-tilt>
+                        <h3>CORE SKILLS</h3>
+                        <div class="resume-chip-row">
+                            <span class="chip">Solidity</span>
+                            <span class="chip">Ethers.js</span>
+                            <span class="chip">Next.js</span>
+                            <span class="chip">Node.js</span>
+                            <span class="chip">TypeScript</span>
+                            <span class="chip">MongoDB</span>
+                            <span class="chip">Hardhat</span>
+                            <span class="chip">IPFS</span>
+                            <span class="chip">Tailwind</span>
+                            <span class="chip">Docker</span>
+                            <span class="chip">CI/CD</span>
+                        </div>
+                    </div>
+                    <div class="resume-card" data-tilt>
+                        <h3>GITHUB HIGHLIGHTS</h3>
+                        <p class="resume-meta">Repos: <span id="resumeRepos">–</span> • Gists: <span id="resumeGists">–</span></p>
+                        <ul class="resume-list" id="resumeTopStarred">
+                            <li>Loading top starred repositories…</li>
+                        </ul>
+                        <p style="margin-top:10px;"><a href="https://github.com/swoet" target="_blank" rel="noopener noreferrer" class="project-card-link">View full GitHub →</a></p>
+                    </div>
+                    <div class="resume-card" data-tilt>
+                        <h3>CV (PDF PREVIEW)</h3>
+                        <iframe class="resume-embed" src="public/cv.pdf" title="Shawn Mutogo CV PDF"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="contact-content">
+                <h2 class="contact-title">LET'S CREATE SOMETHING MEANINGFUL TOGETHER.</h2>
+                <p class="contact-subtitle">Interested in discussing a blockchain project or partnership? Simply want to have a chat? Just call or send a mail!</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span>📞</span>
+                        <a href="tel:+263788302692">+263 788 302 692</a>
+                    </div>
+                    <div class="contact-item">
+                        <span>📧</span>
+                        <a href="mailto:shawnmutogo5@gmail.com">shawnmutogo5@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span>📍</span>
+                        <span>Based in Zimbabwe</span>
+                    </div>
+                </div>
+
+                <div class="contact-3d">
+                    <div class="contact-orb orb-a"></div>
+                    <div class="contact-orb orb-b"></div>
+                    <div class="cta-card" id="contactCta" data-tilt>
+                        <div class="cta-glow"></div>
+                        <div class="cta-inner">
+                            <a href="mailto:shawnmutogo5@gmail.com" class="cta-btn">GET IN TOUCH!</a>
+                            <div class="cta-social">
+                                <a href="https://github.com/swoet" class="cta-social-btn" target="_blank" aria-label="GitHub">📱</a>
+                                <a href="https://linkedin.com/in/shawnmutogo" class="cta-social-btn" target="_blank" aria-label="LinkedIn">💼</a>
+                                <a href="https://twitter.com/shawnmutogo" class="cta-social-btn" target="_blank" aria-label="Twitter">🐦</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoTitle" aria-describedby="videoDescription">
+        <div class="video-modal-content">
+            <button class="video-close" id="videoClose">&times;</button>
+            <div class="video-container">
+                <video class="video-element" id="videoPlayer" controls playsinline preload="metadata">
+                    <source src="" type="video/mp4">
+                    Your browser doesn't support the video tag.
+                </video>
+                <div class="video-loading" id="videoLoading">
+                    <div class="spinner"></div>
+                    <p id="videoLoadingText">Loading video…</p>
+                    <button class="video-retry" id="videoRetryBtn" type="button">Retry</button>
+                </div>
+                <div class="video-controls">
+                    <button id="playPauseBtn">Play</button>
+                    <button id="stopBtn">Stop</button>
+                    <button id="muteBtn">Mute</button>
+                    <button id="fullscreenBtn">Fullscreen</button>
+                </div>
+            </div>
+            <div class="video-info">
+                <h3 class="video-title" id="videoTitle">Project Video</h3>
+                <p class="video-description" id="videoDescription">Watch this project demonstration</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Shawn Mutogo © 2024 | Privacy & Cookies</p>
+    </footer>
+
+    <!-- Loading Effects Script -->
+    <script src="js/loading-effects.js"></script>
+    <!-- API Client for dynamic data loading -->
+    <script src="js/api-client.js"></script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        // Add scroll reveal class to elements (exclude About to avoid hidden content)
+        document.querySelectorAll('.project-card, .process-step, .resume-card').forEach(el => {
+            el.classList.add('scroll-reveal');
+        });
+
+        // Now observe all scroll-reveal elements (after classes are applied)
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 10, 10, 0.98)';
+            } else {
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+            }
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const heroImage = document.querySelector('.hero-image');
+            if (heroImage) {
+                // Lock in place: no vertical translation
+                heroImage.style.transform = '';
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const nav = document.querySelector('.nav');
+        
+        mobileMenu.addEventListener('click', () => {
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Search was removed from header to keep UI minimal and focused.
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // Cache + ETag keys
+        const CACHE_KEYS = {
+            repos: 'gh_repos_cache_v1',
+            etag: 'gh_repos_etag_v1',
+            top: 'gh_top_cache_v1'
+        };
+
+        function renderFromCache() {
+            try {
+                const cachedRepos = JSON.parse(localStorage.getItem(CACHE_KEYS.repos) || 'null');
+                const cachedTop = JSON.parse(localStorage.getItem(CACHE_KEYS.top) || 'null');
+                if (cachedRepos && Array.isArray(cachedRepos)) {
+                    displayGitHubRepos(cachedRepos);
+                    updateGitHubStats(cachedRepos);
+                    updateGitHubLastUpdated();
+                }
+                if (cachedTop && Array.isArray(cachedTop)) {
+                    renderTopProjects(cachedTop);
+                }
+            } catch (_) {}
+        }
+
+        async function revalidateGitHubData() {
+            await Promise.all([fetchGitHubReposETag(), fetchTopProjects()]);
+        }
+
+        // GitHub API functionality with ETag revalidation
+        async function fetchGitHubReposETag() {
+            try {
+                const etag = localStorage.getItem(CACHE_KEYS.etag);
+                const headers = etag ? { 'If-None-Match': etag } : {};
+                const response = await fetch('https://api.github.com/users/swoet/repos?sort=updated&per_page=6', { headers });
+
+                if (response.status === 304) {
+                    // Not modified; keep cached content
+                    return;
+                }
+
+                const repos = await response.json();
+                if (Array.isArray(repos) && repos.length > 0) {
+                    displayGitHubRepos(repos);
+                    updateGitHubStats(repos);
+                    updateGitHubLastUpdated();
+                    try {
+                        localStorage.setItem(CACHE_KEYS.repos, JSON.stringify(repos));
+                        const newEtag = response.headers.get('ETag');
+                        if (newEtag) localStorage.setItem(CACHE_KEYS.etag, newEtag);
+                    } catch (_) {}
+                } else {
+                    showGitHubError();
+                }
+            } catch (error) {
+                console.error('Error fetching GitHub repos with ETag:', error);
+                showGitHubError();
+            }
+        }
+
+        function updateGitHubLastUpdated() {
+            const el = document.getElementById('githubLastUpdated');
+            if (!el) return;
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            el.textContent = `Last updated: ${now.toLocaleString(undefined, options)}`;
+        }
+
+        function displayGitHubRepos(repos) {
+            const reposContainer = document.getElementById('githubRepos');
+            reposContainer.innerHTML = '';
+
+            repos.forEach(repo => {
+                const card = document.createElement('div');
+                card.className = 'repo-card';
+
+                // Header with name and updated date
+                const header = document.createElement('div');
+                header.className = 'repo-header';
+
+                const nameLink = document.createElement('a');
+                nameLink.href = repo.html_url;
+                nameLink.target = '_blank';
+                nameLink.rel = 'noopener noreferrer';
+                nameLink.className = 'repo-name';
+                nameLink.textContent = repo.name || 'Repository';
+
+                const stats = document.createElement('div');
+                stats.className = 'repo-stats';
+                stats.style.color = '#aaa';
+                const updated = new Date(repo.updated_at).toLocaleDateString();
+                const updSpan = document.createElement('span');
+                updSpan.textContent = `Updated: ${updated}`;
+                stats.appendChild(updSpan);
+
+                header.appendChild(nameLink);
+                header.appendChild(stats);
+
+                // Description
+                const desc = document.createElement('p');
+                desc.className = 'repo-description';
+                desc.textContent = repo.description || 'No description available.';
+
+                // Tech tags
+                const tech = document.createElement('div');
+                tech.className = 'repo-tech';
+                const languages = repo.language ? [repo.language] : [];
+                const topics = Array.isArray(repo.topics) ? repo.topics.slice(0, 3) : [];
+                const allTech = [...languages, ...topics].filter(Boolean);
+                allTech.forEach(t => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tech-tag';
+                    tag.textContent = t;
+                    tech.appendChild(tag);
+                });
+
+                // Links
+                const links = document.createElement('div');
+                links.className = 'repo-links';
+
+                const codeLink = document.createElement('a');
+                codeLink.href = repo.html_url;
+                codeLink.target = '_blank';
+                codeLink.rel = 'noopener noreferrer';
+                codeLink.className = 'repo-link';
+                codeLink.textContent = 'View Code';
+                links.appendChild(codeLink);
+
+                if (repo.homepage && /^https?:\/\//i.test((repo.homepage || '').trim())) {
+                    const liveLink = document.createElement('a');
+                    liveLink.href = repo.homepage;
+                    liveLink.target = '_blank';
+                    liveLink.rel = 'noopener noreferrer';
+                    liveLink.className = 'repo-link';
+                    liveLink.textContent = 'Live Demo';
+                    links.appendChild(liveLink);
+                }
+
+                // Assemble card
+                card.appendChild(header);
+                card.appendChild(desc);
+                card.appendChild(tech);
+                card.appendChild(links);
+
+                reposContainer.appendChild(card);
+            });
+        }
+
+        function updateGitHubStats(repos) {
+            const totalRepos = repos.length;
+            const totalReposEl = document.getElementById('totalRepos');
+            if (totalReposEl) totalReposEl.textContent = totalRepos;
+        }
+
+        function showGitHubError() {
+            const reposContainer = document.getElementById('githubRepos');
+            reposContainer.innerHTML = `
+                <div class="loading-spinner" style="grid-column: 1 / -1;">
+                    <p>Unable to load repositories. Please check my <a href="https://github.com/swoet" target="_blank" style="color: #ff6b35;">GitHub profile</a> directly.</p>
+                </div>
+            `;
+        }
+
+        // Load GitHub repos and initialize portfolio content when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Show loading screen with animation
+            showLoadingScreen();
+            
+            // 1) Render cached placeholders instantly
+            renderFromCache();
+            
+            // 2) Load videos from admin API (if available)
+            await loadVideos();
+            
+            // 3) Load top projects (admin API first, GitHub fallback)
+            await fetchTopProjects();
+            
+            // 4) Revalidate in the background (and periodically)
+            revalidateGitHubData();
+            setInterval(revalidateGitHubData, 10 * 60 * 1000); // every 10 minutes
+            
+            // 5) Set up real-time update listeners
+            window.addEventListener('portfolioUpdate', (event) => {
+                console.log('Portfolio content updated:', event.detail);
+                // Refresh top projects when content updates
+                fetchTopProjects();
+                // Reload videos when video updates
+                if (event.detail.type === 'video') {
+                    loadVideos();
+                }
+            });
+            
+            // Hide loading screen after content is loaded
+            setTimeout(hideLoadingScreen, 4500); // Show for 4.5 seconds
+        });
+        
+        // Loading screen functions
+        function showLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.remove('hidden');
+                // Generate random particles
+                createLoadingParticles();
+            }
+        }
+        
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+                // Clean up particles
+                setTimeout(() => {
+                    const particles = loadingScreen.querySelectorAll('.particle');
+                    particles.forEach(p => p.remove());
+                }, 1000);
+            }
+        }
+        
+        function createLoadingParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            if (!particlesContainer) return;
+            
+            // Create additional random particles
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Top 3 most recently updated projects from admin API or GitHub fallback
+        async function fetchTopProjects() {
+            try {
+                // Try admin API first
+                if (window.PortfolioAPI) {
+                    const projects = await window.PortfolioAPI.getFeaturedProjects(3);
+                    if (projects && projects.length > 0) {
+                        renderTopProjects(projects, false); // false = not GitHub data
+                        try { localStorage.setItem(CACHE_KEYS.top, JSON.stringify(projects)); } catch (_) {}
+                        return;
+                    }
+                }
+            } catch (apiError) {
+                console.log('Admin API unavailable, falling back to GitHub:', apiError);
+            }
+            
+            // Fallback to GitHub
+            try {
+                const response = await fetch('https://api.github.com/users/swoet/repos?per_page=100&sort=updated&direction=desc');
+                const repos = await response.json();
+                const filtered = repos
+                    .filter(r => !r.fork)
+                    .slice(0, 3);
+
+                renderTopProjects(filtered, true); // true = GitHub data
+                try { localStorage.setItem(CACHE_KEYS.top, JSON.stringify(filtered)); } catch (_) {}
+            } catch (e) {
+                console.error('Error loading projects from both APIs:', e);
+                const container = document.getElementById('topProjects');
+                if (container) {
+                    container.innerHTML = '<div class="loading-spinner" style="grid-column: 1 / -1;"><p>Unable to load projects. Please check my <a href="https://github.com/swoet" target="_blank" style="color: #ff6b35;">GitHub</a>.</p></div>';
+                }
+            }
+        }
+
+        function renderTopProjects(projects, isGitHubData = true) {
+            const container = document.getElementById('topProjects');
+            if (!container) return;
+            container.innerHTML = '';
+
+            projects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+
+                // Handle both admin API and GitHub data structures
+                let name, description, imageUrl, liveUrl, codeUrl, updated;
+                
+                if (isGitHubData) {
+                    name = project.name;
+                    description = project.description || 'Open-source project.';
+                    imageUrl = `https://placehold.co/1200x800/1a1a1a/ffffff?text=${encodeURIComponent(project.name)}`;
+                    liveUrl = project.homepage;
+                    codeUrl = project.html_url;
+                    updated = new Date(project.updated_at).toLocaleDateString();
+                } else {
+                    name = project.title;
+                    description = project.description || 'Portfolio project.';
+                    imageUrl = project.image_url || `https://placehold.co/1200x800/1a1a1a/ffffff?text=${encodeURIComponent(project.title)}`;
+                    liveUrl = project.live_url;
+                    codeUrl = project.github_url;
+                    updated = new Date(project.updated_at || project.created_at).toLocaleDateString();
+                }
+
+                const homepageLink = liveUrl ? `<a href="${liveUrl}" target="_blank" class="project-card-link">LIVE →</a>` : '';
+
+                card.innerHTML = `
+                    <div class="project-card-image">
+                        <img src="${imageUrl}" alt="${name}">
+                    </div>
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">${name.toUpperCase()}</h3>
+                        <div class="project-card-category">Updated: ${updated}</div>
+                        <p class="project-card-description">${description}</p>
+                        <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                            ${codeUrl ? `<a href="${codeUrl}" target="_blank" class="project-card-link">CODE →</a>` : ''}
+                            ${homepageLink}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Video functionality
+        const videoModal = document.getElementById('videoModal');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoClose = document.getElementById('videoClose');
+        const videoTitle = document.getElementById('videoTitle');
+        const videoDescription = document.getElementById('videoDescription');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        let trapCleanup = null;
+
+        // Video data - will be loaded dynamically from admin API
+        let videoData = {
+            'charity-shopper': {
+                src: 'videos/charity-shopper.mp4', poster: 'public/charity-cover.png',
+                title: 'Charity Shopper Platform',
+                description: 'A modern e-commerce platform that connects donors with local charity shops, featuring responsive design and seamless user experience.'
+            },
+            'red-notice': {
+                src: 'videos/red-notice.mp4', poster: 'public/red-notice-cover.png',
+                title: 'Red Notice Web Application',
+                description: 'Advanced web application with modern UI design, interactive features, and responsive layout for enhanced user engagement.'
+            },
+            'techunity-os': {
+                src: 'videos/techunity-os.mp4', poster: 'public/techunity-cover.png',
+                title: 'TechUnity Global OS',
+                description: 'Innovative operating system platform with global connectivity, advanced features, and cutting-edge technological integration.'
+            }
+        };
+
+        // Load videos from admin API
+        async function loadVideos() {
+            try {
+                if (window.PortfolioAPI) {
+                    const videos = await window.PortfolioAPI.getVideos();
+                    if (videos && videos.length > 0) {
+                        // Convert admin API videos to videoData format
+                        const apiVideoData = {};
+                        videos.forEach(video => {
+                            // Create a slug/key from the title
+                            const key = video.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                            apiVideoData[key] = {
+                                src: video.video_url,
+                                poster: video.poster_url || video.cover_url || video.image_url || '',
+                                title: video.title,
+                                description: video.description
+                            };
+                        });
+                        
+                        // Update videoData with API data
+                        videoData = { ...videoData, ...apiVideoData };
+                        console.log('Loaded videos from admin API:', Object.keys(apiVideoData));
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.log('Could not load videos from admin API, using defaults:', error);
+            }
+            return false;
+        }
+
+        // Open video modal
+        function openVideoModal(videoKey) {
+            const data = videoData[videoKey] || {};
+            // Fallback to local videos/<key>.mp4 if not provided by API
+            const src = data.src || `videos/${videoKey}.mp4`;
+
+            // Update both the video element and its <source> for maximum compatibility
+            const sourceEl = videoPlayer.querySelector('source');
+            if (sourceEl) sourceEl.src = src;
+            videoPlayer.src = src;
+            videoPlayer.load();
+
+            // Poster support
+            videoPlayer.setAttribute('poster', data.poster || '');
+
+            // Update metadata text under the player
+            videoTitle.textContent = data.title || 'Project Video';
+            videoDescription.textContent = data.description || 'Watch this project demonstration';
+
+            // Show modal and lock scroll
+            videoModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            trapCleanup = trapFocus(videoModal);
+            videoClose.focus();
+
+            // Try to autoplay (may be blocked by the browser; controls remain visible)
+            const p = videoPlayer.play();
+            if (p && typeof p.then === 'function') {
+                p.catch(() => {});
+            }
+        }
+
+        // Video loading spinner toggles
+        const videoLoading = document.getElementById('videoLoading');
+        const videoLoadingText = document.getElementById('videoLoadingText');
+        const videoRetryBtn = document.getElementById('videoRetryBtn');
+        function showVideoSpinner() { if (videoLoading) videoLoading.classList.add('active'); }
+        function hideVideoSpinner() { if (videoLoading) videoLoading.classList.remove('active'); }
+        function setLoadingMessage(msg) { if (videoLoadingText) videoLoadingText.textContent = msg; }
+        videoPlayer.addEventListener('waiting', showVideoSpinner);
+        videoPlayer.addEventListener('stalled', showVideoSpinner);
+        videoPlayer.addEventListener('seeking', showVideoSpinner);
+        videoPlayer.addEventListener('loadstart', showVideoSpinner);
+        videoPlayer.addEventListener('playing', hideVideoSpinner);
+        videoPlayer.addEventListener('canplay', hideVideoSpinner);
+        videoPlayer.addEventListener('canplaythrough', hideVideoSpinner);
+
+        // Retry logic: attempt reloading the current source
+        function retryPlayback() {
+            try { showVideoSpinner(); setLoadingMessage('Reconnecting…'); } catch (_) {}
+            const currentSrc = videoPlayer.currentSrc || (videoPlayer.querySelector('source')?.src) || '';
+            // Force reload
+            if (currentSrc) {
+                const sourceEl = videoPlayer.querySelector('source');
+                if (sourceEl) sourceEl.src = currentSrc;
+                videoPlayer.src = currentSrc;
+            }
+            videoPlayer.load();
+            const p = videoPlayer.play();
+            if (p && typeof p.then === 'function') { p.catch(() => setLoadingMessage('Click Play to continue')); }
+        }
+        if (videoRetryBtn) videoRetryBtn.addEventListener('click', retryPlayback);
+        if (videoLoading) videoLoading.addEventListener('click', () => { if (videoRetryBtn) videoRetryBtn.click(); });
+
+        function closeVideoModal() {
+            videoModal.classList.remove('active');
+            try { videoPlayer.pause(); } catch (_) {}
+            videoPlayer.currentTime = 0;
+            document.body.style.overflow = 'auto';
+            if (typeof trapCleanup === 'function') { trapCleanup(); trapCleanup = null; }
+        }
+
+        // Event listeners for video modal triggers
+        // Bind any element with data-video to open the modal (works for case cards and others)
+        function bindWatchDemo() {
+            document.querySelectorAll('[data-video]').forEach(el => {
+                if (el.dataset.bound === '1') return;
+                el.addEventListener('click', (e) => {
+                    // allow normal navigation for anchors without data-video or with real href? Our demo links use '#'
+                    e.preventDefault();
+                    const key = el.getAttribute('data-video') || (el.closest('[data-video]')?.getAttribute('data-video'));
+                    if (key) openVideoModal(key);
+                });
+                el.dataset.bound = '1';
+            });
+        }
+        bindWatchDemo();
+
+        // Close modal events
+        videoClose.addEventListener('click', closeVideoModal);
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                closeVideoModal();
+            }
+        });
+
+        // Video controls
+        playPauseBtn.addEventListener('click', () => {
+            if (videoPlayer.paused || videoPlayer.ended) {
+                videoPlayer.play();
+                playPauseBtn.textContent = 'Pause';
+            } else {
+                videoPlayer.pause();
+                playPauseBtn.textContent = 'Play';
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+            playPauseBtn.textContent = 'Play';
+        });
+
+        muteBtn.addEventListener('click', () => {
+            videoPlayer.muted = !videoPlayer.muted;
+            muteBtn.textContent = videoPlayer.muted ? 'Unmute' : 'Mute';
+        });
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (videoPlayer.requestFullscreen) {
+                videoPlayer.requestFullscreen();
+            } else if (videoPlayer.mozRequestFullScreen) {
+                videoPlayer.mozRequestFullScreen();
+            } else if (videoPlayer.webkitRequestFullscreen) {
+                videoPlayer.webkitRequestFullscreen();
+            } else if (videoPlayer.msRequestFullscreen) {
+                videoPlayer.msRequestFullscreen();
+            }
+        });
+
+        // Update play/pause button when video state changes
+        videoPlayer.addEventListener('play', () => {
+            playPauseBtn.textContent = 'Pause';
+        });
+
+        videoPlayer.addEventListener('pause', () => {
+            playPauseBtn.textContent = 'Play';
+        });
+
+        videoPlayer.addEventListener('ended', () => {
+            playPauseBtn.textContent = 'Play';
+        });
+
+        // Accessibility: focus trap helper
+        function trapFocus(container) {
+            const selectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex]:not([tabindex="-1"])';
+            const focusables = Array.from(container.querySelectorAll(selectors)).filter(el => el.offsetParent !== null);
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            function onKeydown(e) {
+                if (e.key !== 'Tab') return;
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+            container.addEventListener('keydown', onKeydown);
+            return () => container.removeEventListener('keydown', onKeydown);
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+                closeVideoModal();
+            }
+        });
+
+        // Orbiting Skills Canvas animation
+        (function initOrbit() {
+            const canvas = document.getElementById('orbitCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width, height, centerX, centerY, dpr;
+            let particles = [];
+
+            function resize() {
+                dpr = window.devicePixelRatio || 1;
+                width = canvas.clientWidth;
+                height = canvas.clientHeight;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                centerX = width / 2;
+                centerY = height / 2;
+            }
+
+            function createParticles(count = 60) {
+                particles = Array.from({ length: count }).map((_, i) => {
+                    const radius = 60 + Math.random() * 180;
+                    const speed = 0.003 + Math.random() * 0.01;
+                    const angle = Math.random() * Math.PI * 2;
+                    const depth = Math.random();
+                    return { radius, speed, angle, depth };
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                // subtle background vignette
+                const grd = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height) * 0.6);
+                grd.addColorStop(0, 'rgba(255,107,53,0.05)');
+                grd.addColorStop(1, 'rgba(10,10,10,0)');
+                ctx.fillStyle = grd;
+                ctx.fillRect(0, 0, width, height);
+
+                particles.forEach(p => {
+                    p.angle += p.speed;
+                    const x = centerX + Math.cos(p.angle) * p.radius;
+                    const y = centerY + Math.sin(p.angle) * (p.radius * 0.45);
+                    const size = 2 + p.depth * 3;
+                    ctx.beginPath();
+                    ctx.fillStyle = `rgba(255, 107, 53, ${0.25 + p.depth * 0.5})`;
+                    ctx.shadowColor = 'rgba(255,107,53,0.35)';
+                    ctx.shadowBlur = 8 + p.depth * 10;
+                    ctx.arc(x, y, size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.shadowBlur = 0;
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            createParticles();
+            draw();
+        })();
+    // 3D tilt interaction for process cards
+        (function initProcessTilt() {
+            const preferReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (preferReduced) return;
+            const cards = document.querySelectorAll('.process-step[data-tilt]');
+            cards.forEach(card => {
+                const visual = card.querySelector('.process-visual');
+                const max = 12; // degrees
+                function setTransform(x, y) {
+                    card.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
+                }
+                card.addEventListener('mousemove', (e) => {
+                    const r = card.getBoundingClientRect();
+                    const px = (e.clientX - r.left) / r.width;
+                    const py = (e.clientY - r.top) / r.height;
+                    const rotY = (0.5 - py) * max * 2; // invert Y for natural tilt
+                    const rotX = (px - 0.5) * max * 2;
+                    setTransform(rotX, rotY);
+                    if (visual) {
+                        visual.style.transform = `translateZ(50px) rotateZ(${(px-0.5)*10}deg)`;
+                    }
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                    if (visual) visual.style.transform = 'translateZ(50px)';
+                });
+            });
+        })();
+    // Tilt interaction for 3D CTA and process cards
+        (function initTilt() {
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduce) return;
+            const max = 12; // degrees
+            const elements = document.querySelectorAll('.process-step[data-tilt], .resume-card[data-tilt], #contactCta');
+            elements.forEach(card => {
+                const inner = card.querySelector('.cta-inner') || card.querySelector('.process-visual');
+                function setTilt(x, y) {
+                    card.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
+                }
+                card.addEventListener('mousemove', (e) => {
+                    const r = card.getBoundingClientRect();
+                    const px = (e.clientX - r.left) / r.width;
+                    const py = (e.clientY - r.top) / r.height;
+                    const rotY = (0.5 - py) * max * 2; // invert Y for natural tilt
+                    const rotX = (px - 0.5) * max * 2;
+                    setTilt(rotX, rotY);
+                    if (inner) inner.style.transform = 'translateZ(40px)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                    if (inner) inner.style.transform = '';
+                });
+            });
+        })();
+    // Resume: load profile (repos/gists only) + top starred repos (names only)
+        async function fetchResumeGitHub() {
+            try {
+                const profileRes = await fetch('https://api.github.com/users/swoet');
+                const profile = await profileRes.json();
+                const reposEl = document.getElementById('resumeRepos');
+                const gistsEl = document.getElementById('resumeGists');
+                if (reposEl) reposEl.textContent = profile.public_repos ?? '0';
+                if (gistsEl) gistsEl.textContent = profile.public_gists ?? '0';
+
+                const reposRes = await fetch('https://api.github.com/users/swoet/repos?per_page=100');
+                const repos = await reposRes.json();
+                const topStarred = (Array.isArray(repos) ? repos : [])
+                    .filter(r => !r.fork)
+                    .sort((a,b) => (b.stargazers_count||0) - (a.stargazers_count||0))
+                    .slice(0, 3);
+                const list = document.getElementById('resumeTopStarred');
+                if (list) {
+                    list.innerHTML = '';
+                    if (topStarred.length === 0) {
+                        list.innerHTML = '<li>No highlighted repositories yet.</li>';
+                    } else {
+                        topStarred.forEach(r => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `<a href="${r.html_url}" target="_blank" class="project-card-link">${r.name}</a>`;
+                            list.appendChild(li);
+                        });
+                    }
+                }
+            } catch (_) {
+                const list = document.getElementById('resumeTopStarred');
+                if (list) list.innerHTML = '<li>Unable to load GitHub data.</li>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchResumeGitHub);
+    </script>
+    <script defer src="js/gsap-parallax-hero.js"></script>
+    <script defer src="js/gsap-project-breakdown.js"></script>
+    <script defer src="js/gsap-image-reveal.js"></script>
+    <script defer src="js/gsap-text-mask-video.js"></script>
+</body>
+</html>

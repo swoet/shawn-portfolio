@@ -1,0 +1,227 @@
+/* Case Studies section — Enrico Deiana style replication (without copying assets)
+   Focus: three large cards, soft rounded panels, subtle borders, strong CTA */
+
+:root {
+  --bg-1: #0b0b0b;
+  --panel: #121212;
+  --panel-2: #151515;
+  --ink: #fff;
+  --muted: #cfcfcf;
+  --line: rgba(255,255,255,0.06);
+  --accent-a: #ff6b35; /* orange */
+  --accent-b: #f7931e; /* amber */
+  --shadow-a: 0 20px 40px rgba(0,0,0,0.45);
+  --shadow-b: 0 12px 34px rgba(255,107,53,0.12);
+}
+
+.case-studies {
+  padding: clamp(60px, 8vw, 120px) 40px;
+  background: radial-gradient(90% 80% at 10% 0%, rgba(255,107,53,0.06), transparent 50%),
+              radial-gradient(90% 80% at 90% 100%, rgba(247,147,30,0.06), transparent 50%),
+              linear-gradient(180deg, #0a0a0a, #0a0a0a);
+  position: relative;
+}
+
+.case-container { max-width: 1400px; margin: 0 auto; }
+
+ .case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: clamp(20px, 3vw, 36px);
+  align-items: stretch;
+  justify-items: center;
+}
+
+ .case-card {
+  position: relative;
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  border-radius: 26px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-a);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: minmax(320px, auto) auto; /* keep visual roomy */
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  isolation: isolate;
+  width: 100%;
+  max-width: 520px;
+}
+
+.case-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-a), var(--shadow-b);
+  border-color: rgba(255,107,53,0.22);
+}
+
+.case-card.featured {
+  border-color: rgba(255,107,53,0.28);
+  box-shadow: 0 28px 70px rgba(255,107,53,0.18), inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+/* Visual area */
+.case-visual {
+  position: relative;
+  aspect-ratio: 16/11;
+  min-height: 340px;
+  padding: 28px 20px 10px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #181818, #101010);
+}
+
+/* Generic phone device */
+.device-phone {
+  position: relative;
+  width: 280px; height: auto;
+  aspect-ratio: 9 / 19.5;
+  /* Brushed metal-like frame */
+  background: linear-gradient(180deg, #141414 0%, #0b0b0b 60%, #070707 100%);
+  border-radius: 36px;
+  border: 1px solid #171717;
+  box-shadow:
+    0 28px 60px rgba(0,0,0,0.55),           /* drop shadow */
+    0 6px 16px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.06),   /* top rim highlight */
+    inset 0 -2px 6px rgba(0,0,0,0.6);       /* bottom rim shading */
+  overflow: hidden;
+}
+/* glass + edge highlights */
+.device-phone::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(130deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 28%, rgba(0,0,0,0) 55%),
+    radial-gradient(140% 90% at 10% 5%, rgba(255,255,255,0.06), rgba(255,255,255,0) 55%),
+    radial-gradient(120% 80% at 90% 95%, rgba(255,255,255,0.04), rgba(255,255,255,0) 55%);
+  mix-blend-mode: screen;
+}
+/* realistic notch / dynamic island */
+.device-phone::after {
+  content: '';
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 38%; height: 18px; border-radius: 12px; 
+  background: linear-gradient(180deg, #0d0d0d, #000);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), 0 6px 16px rgba(0,0,0,0.6);
+}
+/* restore sizes and refine corner radii per variant */
+.device-phone.large { width: auto; height: 88%; max-height: 88%; border-radius: 34px; }
+.device-phone.small { width: 120px; height: auto; border-radius: 24px; box-shadow: inset 0 0 0 6px #0a0a0a, 0 10px 20px rgba(0,0,0,.5); }
+
+.device-screen {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.device-screen img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+/* subtle glass and inner bezel */
+.device-screen::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  /* Remove heavy vignette/rim to avoid grey halo around the display */
+  box-shadow: none;
+}
+/* gesture bar */
+.device-screen::after {
+  content: '';
+  position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: 6px; width: 32%; height: 3px; border-radius: 4px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+  opacity: 0.6; pointer-events: none;
+}
+/* Ensure logos fully visible inside small phones (Charity Shopper and others) */
+.device-phone.small .device-screen { inset: 8px; background: #000; border-radius: 18px; }
+.device-phone.small .device-screen img { object-fit: contain; }
+/* Ensure featured phone content fits (Red Notice) */
+.device-phone.large .device-screen { inset: 14px; background: #000; border-radius: 22px; }
+.device-phone.large .device-screen img { object-fit: contain; }
+
+/* Left card: fan of small phones */
+.device-fan { position: relative; width: min(440px, 92%); height: min(340px, 88%); pointer-events: none; }
+.device-fan .device-phone.small { position: absolute; }
+.device-fan .p1 { left: 8%; top: 48%; transform: translate(-50%,-50%) rotate(-28deg); }
+.device-fan .p2 { left: 24%; top: 22%; transform: translate(-50%,-50%) rotate(-12deg); }
+.device-fan .p3 { left: 44%; top: 10%; transform: translate(-50%,-50%) rotate(0deg); }
+.device-fan .p4 { right: 24%; top: 22%; transform: translate(50%,-50%) rotate(12deg); }
+.device-fan .p5 { right: 8%; top: 48%; transform: translate(50%,-50%) rotate(28deg); }
+.device-fan .p6 { left: 50%; bottom: -6%; transform: translate(-50%,0) rotate(0deg) scale(0.92); }
+
+/* Right card: tilted duo */
+.device-duo { position: relative; width: min(420px, 92%); height: min(340px, 88%); }
+.device-duo .device-phone.small { position: absolute; }
+.device-duo .a { left: 22%; top: 40%; transform: translate(-50%,-50%) rotate(-14deg); z-index: 2; }
+.device-duo .b { left: 75%; top: 52%; transform: translate(-50%,-50%) rotate(12deg) scale(0.92); }
+
+/* Center card phone hover lift */
+.case-card.featured .device-phone { transition: transform .35s ease; }
+.case-card.featured:hover .device-phone { transform: translateY(-6px) scale(1.02); }
+
+/* Body */
+.case-body { padding: 24px 24px 28px; text-align: center; min-height: 150px; display: grid; align-content: start; gap: 10px; }
+.case-subtitle {
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #bcbcbc; margin-bottom: 10px;
+}
+.case-title {
+  font-size: clamp(22px, 3vw, 28px); letter-spacing: .8px; color: var(--ink); margin-bottom: 18px; font-weight: 800;
+}
+.case-btn {
+  display: inline-block; text-decoration: none; color: #0a0a0a; font-weight: 900; letter-spacing: 1px;
+  padding: 14px 24px; border-radius: 12px; text-transform: uppercase;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  box-shadow: 0 14px 36px rgba(255,107,53,.35);
+  position: relative; transition: transform .2s ease, box-shadow .2s ease;
+}
+.case-btn::after { content:''; position:absolute; left: 20px; right: 20px; bottom: 8px; height: 10px; border-radius: 8px; background: rgba(0,0,0,.18); filter: blur(8px); z-index: -1; }
+.case-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 46px rgba(255,107,53,.5); }
+
+/* Header inside the section (optional) */
+.case-titlebar { text-align:center; margin-bottom: 36px; }
+.case-titlebar h2 {
+  font-size: clamp(28px, 5vw, 44px); font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg,#fff 0%, var(--accent-a) 60%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* Actions */
+.case-actions { display: flex; gap: 12px; justify-content: flex-start; align-items: center; margin-top: 10px; flex-wrap: wrap; width: 100%; }
+.case-ghost {
+  display: inline-block; text-decoration: none; color: #fff; font-weight: 800; letter-spacing: 1px;
+  padding: 12px 20px; border-radius: 12px; text-transform: uppercase; border: 2px solid rgba(255,255,255,0.16);
+  background: transparent; transition: transform .2s ease, border-color .2s ease, color .2s ease;
+}
+.case-ghost:hover { transform: translateY(-2px); border-color: rgba(255,107,53,0.6); color: #ffbe8c; }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .case-grid { grid-template-columns: 1fr; }
+  .device-fan, .device-duo { width: 96%; height: 300px; transform: scale(.95); transform-origin: center; }
+  .case-body { padding: 22px; }
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .case-studies { padding: 48px 18px; }
+  .case-grid { gap: 20px; }
+  .case-card { border-radius: 20px; max-width: 520px; margin: 0 auto; }
+  .case-visual { min-height: 260px; }
+  .device-phone.small { width: 100px; }
+  .device-phone.large { height: 82%; width: auto; }
+  .device-fan, .device-duo { height: 260px; transform: scale(.96); }
+  .case-titlebar h2 { font-size: clamp(24px, 7vw, 36px); }
+  .case-title { font-size: clamp(20px, 5.5vw, 24px); margin-bottom: 12px; }
+  .case-subtitle { font-size: 11px; letter-spacing: 1.4px; }
+  .case-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .case-btn, .case-ghost { width: 100%; text-align: center; padding: 12px 16px; font-size: 13px; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .case-studies { padding: 40px 14px; }
+  .case-visual { min-height: 240px; }
+  .device-fan, .device-duo { height: 240px; }
+  .device-phone.small { width: 92px; }
+}
+
+/* Reduce heavy interactions for users preferring reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .case-card, .case-btn, .case-ghost { transition: none !important; }
+}

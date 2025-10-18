@@ -1,0 +1,68 @@
+.text-mask-video-section {
+  position: relative;
+  min-height: 100vh;
+  background: #ffffff; /* overlay is white by default */
+  overflow: hidden;
+}
+
+.text-mask-video-section .tmv-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.text-mask-video-section .tmv-media video,
+.text-mask-video-section .tmv-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-mask-video-section .tmv-overlay {
+  position: absolute;
+  inset: 0;
+  background: #ffffff; /* white overlay */
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 6vh, 72px) clamp(16px, 4vw, 48px);
+  box-sizing: border-box;
+}
+
+.text-mask-video-section .tmv-text {
+  font-weight: 900;
+  font-size: clamp(26px, 6.8vw, 96px);
+  letter-spacing: 0.02em;
+  color: #000000; /* black text */
+  mix-blend-mode: multiply; /* text multiplies with white overlay to cut out on video */
+  display: flex;
+  gap: 0.2em;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  text-align: center;
+  line-height: 0.95;
+  width: 100%;
+  max-width: min(980px, 92vw);
+}
+
+.text-mask-video-section .tmv-letter { display: inline-block; will-change: transform; }
+.text-mask-video-section .tmv-word {
+  display: inline-block;
+  white-space: nowrap; /* keep each word intact */
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .text-mask-video-section { min-height: 100vh; }
+}
+
+@media (min-width: 900px) {
+  .text-mask-video-section .tmv-text {
+    max-width: min(1400px, 96vw);
+    flex-wrap: nowrap;     /* keep one line on desktop */
+    white-space: nowrap;
+  }
+}
+
+

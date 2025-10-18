@@ -1,0 +1,63 @@
+.build-up-reveal-section {
+  position: relative;
+  min-height: 120vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #0a0a0a, #0a0a0a);
+}
+
+/* Phenakistoscope-like rotating strobe ring overlay */
+.build-up-reveal-section .strobe-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background: repeating-conic-gradient(
+    rgba(0,0,0,0.0) 0deg 12deg,
+    rgba(0,0,0,0.6) 12deg 24deg
+  );
+  animation: ringSpin 12s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+.build-up-reveal-section .reveal-container {
+  width: min(1000px, 92vw);
+  height: min(100vh, 1200px);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  /* Show a poster image behind the reveal so it's never blank */
+  background: #000;
+  position: relative; /* stack images inside */
+}
+
+.build-up-reveal-section .reveal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* sit above the poster background */
+  opacity: 0; /* GSAP will fade between */
+  transform: scale(1.05); /* subtle ken burns start */
+  will-change: transform, opacity, clip-path;
+  /* Visible by default; JS will add a class to enable reveal animation */
+}
+
+/* When JS is active, start hidden and reveal on scroll */
+.build-up-reveal-section.is-animated .reveal-image {
+  clip-path: inset(100% 0 0 0 round 0px);
+}
+
+@media (max-width: 768px) {
+  .build-up-reveal-section { min-height: 100vh; }
+}
+
+
