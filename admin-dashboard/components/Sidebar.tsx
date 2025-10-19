@@ -14,6 +14,7 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Projects", href: "/dashboard/projects", icon: Folder },
   { name: "Videos", href: "/dashboard/videos", icon: Video },
+  { name: "Sections", href: "/dashboard/sections", icon: FileText },
   { name: "CV", href: "/dashboard/cv", icon: FileText },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];

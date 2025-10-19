@@ -113,6 +113,107 @@ async function main() {
     console.log(`✅ Created CV section: ${section.title}`);
   }
 
+  // Create sample Page Sections (editable static content)
+  const pageSections = [
+    {
+      key: 'hero',
+      data: JSON.stringify({
+        title: "Hi, I'm Shawn.",
+        subtitle: 'Full-stack developer focused on clean UX, performance, and delightful UI.',
+        imageUrl: 'https://placehold.co/800x800/png?text=Shawn',
+      }),
+    },
+    {
+      key: 'about',
+      data: JSON.stringify({
+        heading: 'About Me',
+        subheading: 'Building modern web experiences',
+        paragraphs: [
+          'I craft responsive, accessible, and performant web apps with a focus on user experience.',
+          'My toolbox includes TypeScript, React, Next.js, Node.js and a healthy dose of pragmatism.'
+        ],
+        imageUrl: 'https://placehold.co/800x600/png?text=About+Image'
+      })
+    },
+    {
+      key: 'books',
+      data: JSON.stringify({
+        title: 'Books & Poetry',
+        subtitle: 'Inspiration and craft',
+        items: [
+          { title: 'Clean Architecture', blurb: 'Timeless architecture principles for resilient systems.' },
+          { title: 'Refactoring UI', blurb: 'Practical tips to design beautiful UIs without relying on a designer.' },
+          { title: 'Atomic Habits', blurb: 'Tiny changes, remarkable results.' }
+        ],
+        poetryHeading: 'Poetry Themes',
+        poetryThemes: ['identity', 'growth', 'community'],
+        philosophyTitle: 'Creative Philosophy',
+        philosophyText: 'Simple, accessible, and purpose-driven experiences—built iteratively with user feedback.'
+      })
+    },
+    {
+      key: 'featured',
+      data: JSON.stringify({
+        imageUrl: 'https://placehold.co/1200x800/png?text=Featured+Project',
+        category: 'CASE STUDY',
+        title: 'Charity Shopper Platform',
+        description: 'A modern e-commerce experience connecting donors with local charity shops.',
+        githubUrl: 'https://github.com/swoet/charity-shopper',
+        liveUrl: 'https://example.com/charity-shopper'
+      })
+    },
+    {
+      key: 'about3d',
+      data: JSON.stringify({
+        title: '3D & Motion',
+        subtitle: 'Subtle motion. Clear communication.',
+        chips: ['GSAP', 'WebGL', 'Framer Motion', 'Canvas']
+      })
+    },
+    {
+      key: 'interlude',
+      data: JSON.stringify({
+        quote: 'Simplicity is the ultimate sophistication.',
+        author: 'Leonardo da Vinci'
+      })
+    },
+    {
+      key: 'process',
+      data: JSON.stringify({
+        steps: [
+          { title: 'Discover', points: ['Goals & constraints', 'User research', 'Technical scope'] },
+          { title: 'Design', points: ['Wireframes', 'High-fidelity UI', 'Design systems'] },
+          { title: 'Develop', points: ['Accessible, performant', 'Type-safe APIs', 'Robust testing'] },
+          { title: 'Deliver', points: ['Deploy & monitor', 'Iterate on feedback', 'Documentation'] }
+        ]
+      })
+    },
+    {
+      key: 'contact',
+      data: JSON.stringify({
+        title: 'Let\'s build something great',
+        subtitle: 'Available for freelance and full-time opportunities',
+        phone: '+254 700 000000',
+        email: 'shawn@example.com',
+        location: 'Nairobi, Kenya',
+        socials: {
+          github: 'https://github.com/swoet',
+          linkedin: 'https://www.linkedin.com/in/shawn-mutogo',
+          twitter: 'https://x.com/swoet'
+        }
+      })
+    }
+  ];
+
+  for (const section of pageSections) {
+    await prisma.pageSection.upsert({
+      where: { key: section.key },
+      update: { data: section.data },
+      create: section,
+    });
+    console.log(`✅ Created page section: ${section.key}`);
+  }
+
   console.log('🎉 Database seeding completed successfully!');
 }
 

@@ -4,8 +4,8 @@
   "description": "Clean, modern portfolio website for Shawn Mutogo",
   "main": "index.html",
   "scripts": {
-    "start": "npx serve . -p 3000",
-    "dev": "npx serve . -p 3000",
+    "start": "npx serve . -p 3001",
+    "dev": "npx serve . -p 3001",
     "optimize:images": "node scripts/optimize-images.mjs",
     "audit": "lighthouse http://localhost:3000 --quiet --chrome-flags=\"--headless=new\" --output html --output-path ./lighthouse-report.html"
   },

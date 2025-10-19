@@ -3,7 +3,7 @@
  * Connects to the Admin Dashboard APIs
  */
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 class PortfolioAPI {
   constructor(baseUrl = API_BASE_URL) {
@@ -121,20 +121,37 @@ class PortfolioAPI {
   }
 
   /**
+   * Get page sections (editable content for static sections)
+   */
+  async getSections() {
+    return this.fetchWithCache('/sections');
+  }
+
+  /**
+   * Get a specific page section by key
+   */
+  async getSection(key) {
+    const sections = await this.getSections();
+    return sections.find(section => section.key === key);
+  }
+
+  /**
    * Get portfolio statistics
    */
   async getStats() {
     try {
-      const [projects, videos, cvSections] = await Promise.all([
+      const [projects, videos, cvSections, sections] = await Promise.all([
         this.getProjects(),
         this.getVideos(),
         this.getCVSections(),
+        this.getSections(),
       ]);
 
       return {
         totalProjects: projects.length,
         totalVideos: videos.length,
         totalCVSections: cvSections.length,
+        totalSections: sections.length,
         lastUpdated: new Date().toISOString(),
       };
     } catch (error) {
@@ -143,6 +160,7 @@ class PortfolioAPI {
         totalProjects: 0,
         totalVideos: 0,
         totalCVSections: 0,
+        totalSections: 0,
         lastUpdated: new Date().toISOString(),
       };
     }
@@ -194,6 +212,7 @@ class PortfolioAPI {
         this.getProjects(),
         this.getVideos(),
         this.getCVSections(),
+        this.getSections(),
       ]);
       console.log('✅ All data prefetched successfully');
     } catch (error) {
@@ -312,17 +331,24 @@ class RealtimeUpdates {
     try {
       switch (type) {
         case 'project':
+        case 'project_updated':
           await this.refreshProjects();
           break;
         case 'video':
+        case 'video_updated':
           await this.refreshVideos();
           break;
         case 'cv':
+        case 'cv_updated':
           await this.refreshCV();
+          break;
+        case 'content_refresh':
+          await this.refreshSections();
           break;
         default:
           // Refresh everything
           await this.api.prefetchAll();
+          await this.refreshSections();
       }
     } catch (error) {
       console.error('Failed to refresh content:', error);
@@ -358,6 +384,16 @@ class RealtimeUpdates {
     const cvSections = await this.api.getCVSections();
     if (window.updateCVSections) {
       window.updateCVSections(cvSections);
+    }
+  }
+
+  /**
+   * Refresh page sections (static sections content)
+   */
+  async refreshSections() {
+    const sections = await this.api.getSections();
+    if (window.updateSections) {
+      window.updateSections(sections);
     }
   }
 

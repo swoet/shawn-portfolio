@@ -3,6 +3,16 @@ import { getServerSession } from "next-auth";
 import { prisma } from '../../../lib/prisma';
 import { authOptions } from "../../../lib/auth";
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: CORS_HEADERS });
+}
+
 // GET /api/cv - Fetch all CV sections
 export async function GET(request: NextRequest) {
   try {
@@ -26,10 +36,10 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return NextResponse.json(cvSections);
-  } catch (error) {
+    return NextResponse.json(cvSections, { headers: CORS_HEADERS });
+  } catch (error: any) {
     console.error('Error fetching CV sections:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
   }
 }
 
@@ -37,7 +47,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: CORS_HEADERS });
   }
 
   try {
@@ -61,10 +71,10 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    return NextResponse.json(cvSection, { status: 201 });
-  } catch (error) {
+    return NextResponse.json(cvSection, { status: 201, headers: CORS_HEADERS });
+  } catch (error: any) {
     console.error('Error creating CV section:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
   }
 }
 
@@ -97,13 +107,13 @@ export async function PUT(request: NextRequest) {
       }
     });
 
-    return NextResponse.json(cvSection);
-  } catch (error: unknown) {
+    return NextResponse.json(cvSection, { headers: CORS_HEADERS });
+  } catch (error: any) {
     console.error('Error updating CV section:', error);
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
-      return NextResponse.json({ error: 'CV section not found' }, { status: 404 });
+      return NextResponse.json({ error: 'CV section not found' }, { status: 404, headers: CORS_HEADERS });
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
   }
 }
 
@@ -126,12 +136,12 @@ export async function DELETE(request: NextRequest) {
       where: { id: parseInt(id) }
     });
 
-    return NextResponse.json({ message: 'CV section deleted successfully' });
-  } catch (error: unknown) {
+    return NextResponse.json({ message: 'CV section deleted successfully' }, { headers: CORS_HEADERS });
+  } catch (error: any) {
     console.error('Error deleting CV section:', error);
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
-      return NextResponse.json({ error: 'CV section not found' }, { status: 404 });
+      return NextResponse.json({ error: 'CV section not found' }, { status: 404, headers: CORS_HEADERS });
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
   }
 }

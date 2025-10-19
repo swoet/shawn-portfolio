@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -51,4 +51,14 @@ model CVSection {
   updated_at   DateTime  @updatedAt
 
   @@map("cv_sections")
+}
+
+model PageSection {
+  id         Int      @id @default(autoincrement())
+  key        String   @unique
+  data       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("page_sections")
 }

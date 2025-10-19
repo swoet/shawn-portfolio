@@ -2734,7 +2734,8 @@
             // 1) Render cached placeholders instantly
             renderFromCache();
             
-            // 2) Load videos from admin API (if available)
+            // 2) Load sections and videos from admin API (if available)
+            await applySectionsFromAPI();
             await loadVideos();
             
             // 3) Load top projects (admin API first, GitHub fallback)
@@ -2745,13 +2746,17 @@
             setInterval(revalidateGitHubData, 10 * 60 * 1000); // every 10 minutes
             
             // 5) Set up real-time update listeners
-            window.addEventListener('portfolioUpdate', (event) => {
+            window.addEventListener('portfolioUpdate', async (event) => {
                 console.log('Portfolio content updated:', event.detail);
                 // Refresh top projects when content updates
                 fetchTopProjects();
                 // Reload videos when video updates
-                if (event.detail.type === 'video') {
-                    loadVideos();
+                if (event.detail.type === 'video' || event.detail.type === 'video_updated') {
+                    await loadVideos();
+                }
+                // Reload sections on generic content refresh
+                if (event.detail.type === 'content_refresh') {
+                    await applySectionsFromAPI();
                 }
             });
             
@@ -2879,6 +2884,167 @@
                 container.appendChild(card);
             });
         }
+
+        // Sections dynamic content
+        function updateSections(sections) {
+            try {
+                const map = new Map((sections || []).map(s => [s.key, s.data || {}]));
+
+                // Hero
+                const hero = map.get('hero');
+                if (hero) {
+                    const titleEl = document.querySelector('.hero-title');
+                    const subEl = document.querySelector('.hero-subtitle');
+                    const imgEl = document.querySelector('.hero-image img');
+                    if (titleEl && hero.title) titleEl.innerHTML = hero.title;
+                    if (subEl && hero.subtitle) subEl.textContent = hero.subtitle;
+                    if (imgEl && hero.imageUrl) imgEl.setAttribute('src', hero.imageUrl);
+                }
+
+                // About
+                const about = map.get('about');
+                if (about) {
+                    const h2 = document.querySelector('.about-text h2');
+                    const h3 = document.querySelector('.about-text h3');
+                    const pEls = document.querySelectorAll('.about-text p');
+                    const img = document.querySelector('.about-image img');
+                    if (h2 && about.heading) h2.textContent = about.heading;
+                    if (h3 && about.subheading) h3.textContent = about.subheading;
+                    if (Array.isArray(about.paragraphs)) {
+                        pEls.forEach((p, i) => { if (about.paragraphs[i]) p.textContent = about.paragraphs[i]; });
+                    }
+                    if (img && about.imageUrl) img.setAttribute('src', about.imageUrl);
+                }
+
+                // Books
+                const books = map.get('books');
+                if (books) {
+                    const t = document.querySelector('.books-title');
+                    const st = document.querySelector('.books-subtitle');
+                    if (t && books.title) t.textContent = books.title;
+                    if (st && books.subtitle) st.textContent = books.subtitle;
+                    const bookItems = document.querySelectorAll('.book-list .book-item');
+                    if (Array.isArray(books.items)) {
+                        bookItems.forEach((item, i) => {
+                            const h4 = item.querySelector('h4');
+                            const p = item.querySelector('p');
+                            const data = books.items[i];
+                            if (!data) return;
+                            if (h4 && data.title) h4.textContent = data.title;
+                            if (p && data.blurb) p.textContent = data.blurb;
+                        });
+                    }
+                    const poetryH3 = document.querySelector('.poetry-card h3');
+                    if (poetryH3 && books.poetryHeading) poetryH3.textContent = books.poetryHeading;
+                    const themes = Array.isArray(books.poetryThemes) ? books.poetryThemes : null;
+                    if (themes) {
+                        const ul = document.querySelector('.poetry-themes');
+                        if (ul) ul.innerHTML = themes.map(t => `<li>${t}</li>`).join('');
+                    }
+                    const phT = document.querySelector('.creative-philosophy h3');
+                    const phP = document.querySelector('.creative-philosophy p');
+                    if (phT && books.philosophyTitle) phT.textContent = books.philosophyTitle;
+                    if (phP && books.philosophyText) phP.textContent = books.philosophyText;
+                }
+
+                // Featured project block
+                const featured = map.get('featured');
+                if (featured) {
+                    const img = document.querySelector('.featured-project .project-image img');
+                    const cat = document.querySelector('.featured-project .project-category');
+                    const title = document.querySelector('.featured-project .project-title');
+                    const desc = document.querySelector('.featured-project .project-description');
+                    const links = document.querySelectorAll('.featured-project .project-links a');
+                    if (img && featured.imageUrl) img.setAttribute('src', featured.imageUrl);
+                    if (cat && featured.category) cat.textContent = featured.category;
+                    if (title && featured.title) title.textContent = featured.title;
+                    if (desc && featured.description) desc.textContent = featured.description;
+                    links.forEach((a) => {
+                        const text = (a.textContent || '').toLowerCase();
+                        if (text.includes('github') && featured.githubUrl) a.setAttribute('href', featured.githubUrl);
+                        if (text.includes('live') && featured.liveUrl) a.setAttribute('href', featured.liveUrl);
+                    });
+                }
+
+                // About-3d
+                const a3d = map.get('about3d');
+                if (a3d) {
+                    const t = document.querySelector('.about-3d-title');
+                    const st = document.querySelector('.about-3d-subtitle');
+                    if (t && a3d.title) t.textContent = a3d.title;
+                    if (st && a3d.subtitle) st.textContent = a3d.subtitle;
+                    if (Array.isArray(a3d.chips)) {
+                        const chips = document.querySelector('.skills-chips');
+                        if (chips) chips.innerHTML = a3d.chips.map((c) => `<span class="chip">${c}</span>`).join('');
+                    }
+                }
+
+                // Interlude
+                const inter = map.get('interlude');
+                if (inter) {
+                    const q = document.querySelector('.interlude-quote');
+                    const a = document.querySelector('.interlude-author');
+                    if (q && inter.quote) q.textContent = inter.quote;
+                    if (a && inter.author) a.textContent = inter.author;
+                }
+
+                // Process
+                const proc = map.get('process');
+                if (proc && Array.isArray(proc.steps)) {
+                    const steps = document.querySelectorAll('.process-step');
+                    steps.forEach((step, i) => {
+                        const data = proc.steps[i];
+                        if (!data) return;
+                        const h3 = step.querySelector('h3');
+                        const ul = step.querySelector('ul');
+                        if (h3 && data.title) h3.textContent = data.title;
+                        if (ul && Array.isArray(data.points)) {
+                            ul.innerHTML = data.points.map(pt => `<li>${pt}</li>`).join('');
+                        }
+                    });
+                }
+
+                // Contact
+                const contact = map.get('contact');
+                if (contact) {
+                    const t = document.querySelector('.contact-title');
+                    const st = document.querySelector('.contact-subtitle');
+                    if (t && contact.title) t.textContent = contact.title;
+                    if (st && contact.subtitle) st.textContent = contact.subtitle;
+                    const phoneLink = document.querySelector('.contact-item a[href^="tel:"]');
+                    const emailLink = document.querySelector('.contact-item a[href^="mailto:"]');
+                    const locEl = document.querySelector('.contact-item span:last-child');
+                    if (phoneLink && contact.phone) { phoneLink.setAttribute('href', `tel:${contact.phone}`); phoneLink.textContent = contact.phone; }
+                    if (emailLink && contact.email) { emailLink.setAttribute('href', `mailto:${contact.email}`); emailLink.textContent = contact.email; }
+                    if (locEl && contact.location) locEl.textContent = contact.location;
+                    const socials = contact.socials || {};
+                    const gh = document.querySelector('.cta-social a[aria-label="GitHub"]');
+                    const li = document.querySelector('.cta-social a[aria-label="LinkedIn"]');
+                    const tw = document.querySelector('.cta-social a[aria-label="Twitter"]');
+                    if (gh && socials.github) gh.setAttribute('href', socials.github);
+                    if (li && socials.linkedin) li.setAttribute('href', socials.linkedin);
+                    if (tw && socials.twitter) tw.setAttribute('href', socials.twitter);
+                }
+            } catch (e) {
+                console.error('Failed to update sections', e);
+            }
+        }
+
+        async function applySectionsFromAPI() {
+            try {
+                if (window.PortfolioAPI) {
+                    const sections = await window.PortfolioAPI.getSections();
+                    if (sections && sections.length) {
+                        updateSections(sections);
+                        return true;
+                    }
+                }
+            } catch {}
+            return false;
+        }
+
+        // Expose for realtime updates
+        window.updateSections = updateSections;
 
         // Video functionality
         const videoModal = document.getElementById('videoModal');

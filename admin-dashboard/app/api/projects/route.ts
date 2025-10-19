@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from '../../../lib/prisma';
 import { broadcastProjectUpdate, broadcastContentRefresh } from '../../../lib/sse-utils';
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: CORS_HEADERS });
+}
 
 // GET /api/projects - Fetch all projects or featured projects
 export async function GET(request: NextRequest) {
@@ -38,10 +47,10 @@ export async function GET(request: NextRequest) {
       tags: project.tags ? JSON.parse(project.tags) : []
     }));
 
-    return NextResponse.json(formattedProjects);
+    return NextResponse.json(formattedProjects, { headers: CORS_HEADERS });
   } catch (error) {
     console.error('Error fetching projects:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
   }
 }
 
@@ -86,7 +95,7 @@ export async function POST(request: NextRequest) {
     broadcastProjectUpdate(formattedProject);
     broadcastContentRefresh();
 
-    return NextResponse.json(formattedProject, { status: 201 });
+    return NextResponse.json(formattedProject, { status: 201, headers: CORS_HEADERS });
   } catch (error) {
     console.error('Error creating project:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -135,13 +144,13 @@ export async function PUT(request: NextRequest) {
     broadcastProjectUpdate(formattedProject);
     broadcastContentRefresh();
 
-    return NextResponse.json(formattedProject);
+    return NextResponse.json(formattedProject, { headers: CORS_HEADERS });
   } catch (error) {
     console.error('Error updating project:', error);
     if (error.code === 'P2025') {
-      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Project not found' }, { status: 404, headers: CORS_HEADERS });
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
   }
 }
 
@@ -168,7 +177,7 @@ export async function DELETE(request: NextRequest) {
     // Broadcast update to connected clients
     broadcastContentRefresh();
 
-    return NextResponse.json({ message: 'Project deleted successfully' });
+    return NextResponse.json({ message: 'Project deleted successfully' }, { headers: CORS_HEADERS });
   } catch (error) {
     console.error('Error deleting project:', error);
     if (error.code === 'P2025') {
