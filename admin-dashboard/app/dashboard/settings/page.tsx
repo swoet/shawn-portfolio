@@ -208,7 +208,7 @@ export default function SettingsPage() {
             <div className="pt-4 border-t">
               <div className="text-sm font-medium text-gray-900 mb-2">Database Status</div>
               <div className="text-sm text-green-600">
-                ✅ Connected • SQLite • Last backup: Never
+                ✅ Connected • PostgreSQL • shawn_portfolio
               </div>
             </div>
           </CardContent>

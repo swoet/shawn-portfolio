@@ -2,9 +2,10 @@ node_modules/
 .next/
 out/
 dist/
-.env
-.env.*
-!.env.example
+# .env files are now visible for development
+# .env
+# .env.*
+# !.env.example
 .vercel/
 .render/
 .cache/

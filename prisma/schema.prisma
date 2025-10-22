@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -87,5 +87,14 @@ model CVSection {
   id        String   @id @default(cuid())
   key       String   @unique
   data      Json
+  updatedAt DateTime @updatedAt
+}
+
+model PageSection {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  data      String   // JSON string for section data
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

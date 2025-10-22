@@ -1,27 +1,25 @@
 {
   "name": "shawn-portfolio-system",
   "private": true,
-  "workspaces": [
-    "admin-dashboard",
-    "portfolio-frontend",
-    "shared"
-  ],
   "scripts": {
-    "dev:admin": "npm --workspace admin-dashboard run dev",
-    "dev:frontend": "npm --workspace portfolio-frontend run dev",
+    "dev:admin": "cd admin-dashboard && npm run dev",
+    "dev:frontend": "cd portfolio-frontend && npm run dev",
     "dev": "concurrently \"npm:dev:admin\" \"npm:dev:frontend\"",
-    "build": "npm -ws run build",
-    "lint": "npm -ws run lint",
+    "install:all": "npm install && cd admin-dashboard && npm install && cd ../portfolio-frontend && npm install && cd ../shared && npm install && cd ..",
+    "build": "cd admin-dashboard && npm run build && cd ../portfolio-frontend && npm run build && cd ..",
     "format": "prettier -w .",
-    "prisma:generate": "prisma generate --schema=./admin-dashboard/prisma/schema.prisma",
-    "prisma:migrate": "prisma migrate dev --schema=./admin-dashboard/prisma/schema.prisma",
-    "prisma:studio": "prisma studio --schema=./admin-dashboard/prisma/schema.prisma"
+    "prisma:generate": "prisma generate --schema=./prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=./prisma/schema.prisma",
+    "prisma:studio": "prisma studio --schema=./prisma/schema.prisma",
+    "prisma:seed": "tsx prisma/seed-sections.ts",
+    "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed"
   },
   "devDependencies": {
-    "concurrently": "^9.0.0",
-    "prettier": "^3.3.2",
-    "prisma": "6.17.1",
-    "typescript": "^5.6.3"
+    "concurrently": "^9.2.1",
+    "prettier": "^3.6.2",
+    "prisma": "^6.17.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3"
   },
   "packageManager": "npm@10.9.0",
   "dependencies": {

@@ -27,9 +27,17 @@ export default function ProjectsPage() {
     try {
       const response = await fetch("/api/projects");
       const data = await response.json();
-      setProjects(data);
+      
+      // Ensure data is an array before setting state
+      if (Array.isArray(data)) {
+        setProjects(data);
+      } else {
+        console.error("API returned non-array data:", data);
+        setProjects([]);
+      }
     } catch (error) {
       console.error("Failed to fetch projects:", error);
+      setProjects([]);
     } finally {
       setLoading(false);
     }

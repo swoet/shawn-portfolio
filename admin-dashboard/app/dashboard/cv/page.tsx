@@ -29,9 +29,17 @@ export default function CVPage() {
     try {
       const response = await fetch("/api/cv");
       const data = await response.json();
-      setCVSections(data);
+      
+      // Ensure data is an array before setting state
+      if (Array.isArray(data)) {
+        setCVSections(data);
+      } else {
+        console.error("API returned non-array data:", data);
+        setCVSections([]);
+      }
     } catch (error) {
       console.error("Failed to fetch CV sections:", error);
+      setCVSections([]);
     } finally {
       setLoading(false);
     }

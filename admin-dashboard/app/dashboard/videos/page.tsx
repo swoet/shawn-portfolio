@@ -25,9 +25,17 @@ export default function VideosPage() {
     try {
       const response = await fetch("/api/videos");
       const data = await response.json();
-      setVideos(data);
+      
+      // Ensure data is an array before setting state
+      if (Array.isArray(data)) {
+        setVideos(data);
+      } else {
+        console.error("API returned non-array data:", data);
+        setVideos([]);
+      }
     } catch (error) {
       console.error("Failed to fetch videos:", error);
+      setVideos([]);
     } finally {
       setLoading(false);
     }
