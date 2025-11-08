@@ -2924,7 +2924,8 @@
                     const imgEl = document.querySelector('.hero-image img');
                     if (titleEl && hero.title) titleEl.innerHTML = hero.title;
                     if (subEl && hero.subtitle) subEl.textContent = hero.subtitle;
-                    if (imgEl && hero.imageUrl) imgEl.setAttribute('src', hero.imageUrl);
+                    const heroImg = hero.imageUrl || hero.image;
+                    if (imgEl && heroImg) imgEl.setAttribute('src', heroImg);
                 }
 
                 // About
@@ -2939,7 +2940,8 @@
                     if (Array.isArray(about.paragraphs)) {
                         pEls.forEach((p, i) => { if (about.paragraphs[i]) p.textContent = about.paragraphs[i]; });
                     }
-                    if (img && about.imageUrl) img.setAttribute('src', about.imageUrl);
+                    const aboutImg = about.imageUrl || about.image;
+                    if (img && aboutImg) img.setAttribute('src', aboutImg);
                 }
 
                 // Books
@@ -2981,14 +2983,15 @@
                     const title = document.querySelector('.featured-project .project-title');
                     const desc = document.querySelector('.featured-project .project-description');
                     const links = document.querySelectorAll('.featured-project .project-links a');
-                    if (img && featured.imageUrl) img.setAttribute('src', featured.imageUrl);
+                    const featuredImg = featured.imageUrl || featured.image_url || featured.image;
+                    if (img && featuredImg) img.setAttribute('src', featuredImg);
                     if (cat && featured.category) cat.textContent = featured.category;
                     if (title && featured.title) title.textContent = featured.title;
                     if (desc && featured.description) desc.textContent = featured.description;
                     links.forEach((a) => {
                         const text = (a.textContent || '').toLowerCase();
-                        if (text.includes('github') && featured.githubUrl) a.setAttribute('href', featured.githubUrl);
-                        if (text.includes('live') && featured.liveUrl) a.setAttribute('href', featured.liveUrl);
+                        if (text.includes('github') && (featured.githubUrl || featured.github_url)) a.setAttribute('href', featured.githubUrl || featured.github_url);
+                        if (text.includes('live') && (featured.liveUrl || featured.live_url)) a.setAttribute('href', featured.liveUrl || featured.live_url);
                     });
                 }
 
@@ -3121,7 +3124,7 @@
                             const key = video.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
                             apiVideoData[key] = {
                                 src: video.video_url,
-                                poster: video.poster_url || video.cover_url || video.image_url || '',
+                                poster: video.thumbnail_url || video.poster_url || video.cover_url || video.image_url || '',
                                 title: video.title,
                                 description: video.description
                             };

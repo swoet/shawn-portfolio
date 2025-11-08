@@ -17,8 +17,8 @@ export default function NewSectionPage() {
       {
         title: "",
         subtitle: "",
-        image: "",
-        text: "",
+        imageUrl: "",
+        description: "",
       },
       null,
       2
