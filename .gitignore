@@ -17,3 +17,6 @@ yarn.lock
 # Large video files (now handled by Git LFS)
 Captures/*.mp4
 # Note: *.mp4 and portfolio-frontend/videos/ are now tracked by Git LFS
+
+# Local Netlify folder
+.netlify

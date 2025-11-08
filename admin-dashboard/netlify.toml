@@ -1,7 +1,4 @@
-# Admin site build config (monorepo)
-# Build only the admin-dashboard app
 [build]
-  base = "admin-dashboard"
   command = "npm install --no-audit --no-fund && npm run build"
   publish = ".next"
 
