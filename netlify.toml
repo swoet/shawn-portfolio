@@ -1,0 +1,11 @@
+# Admin site build config (monorepo)
+[build]
+  base = "admin-dashboard"
+  command = "npm ci && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
