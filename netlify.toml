@@ -1,11 +1,8 @@
 # Admin site build config (monorepo)
+# Build only the admin-dashboard app
 [build]
-  base = "admin-dashboard"
-  command = "npm ci && npm run build"
-  publish = ".next"
+  command = "cd admin-dashboard && npm install --no-audit --no-fund && npm run build"
+  publish = "admin-dashboard/.next"
 
 [build.environment]
   NODE_VERSION = "20"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
