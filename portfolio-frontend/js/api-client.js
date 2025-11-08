@@ -3,7 +3,10 @@
  * Connects to the Admin Dashboard APIs
  */
 
-const API_BASE_URL = 'http://localhost:3000/api';
+// Prefer a global override (config.js) or meta tag; fallback to deployed admin
+const API_BASE_URL = (typeof window !== 'undefined' && window.API_BASE_URL)
+  || (typeof document !== 'undefined' && document.querySelector('meta[name="api-base-url"]')?.getAttribute('content'))
+  || 'https://shawnmutogo-admin.netlify.app/api';
 
 class PortfolioAPI {
   constructor(baseUrl = API_BASE_URL) {

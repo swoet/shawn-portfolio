@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="css/case-studies.css">
     
     <link rel="icon" href="public/profile.jpg">
+    <!-- Optional: set API base URL via meta (overridden by config.js if present) -->
+    <meta name="api-base-url" content="https://shawnmutogo-admin.netlify.app/api">
+
     <!-- GSAP feature styles -->
     <link rel="stylesheet" href="css/gsap-parallax-hero.css">
     <link rel="stylesheet" href="css/gsap-project-breakdown.css">
@@ -1947,6 +1950,80 @@
             transform: translateY(0);
         }
     </style>
+    <!-- Responsive size overrides -->
+    <style>
+      /* Global scale down a bit and constrain widths */
+      .header-content,
+      .featured-content,
+      .projects-content,
+      .video-showcase-content,
+      .about-content,
+      .github-projects-content,
+      .process-content,
+      .resume-content,
+      .contact-content { max-width: 1100px !important; }
+
+      /* Tighter paddings site‑wide */
+      .featured-project,
+      .projects-section,
+      .books-section,
+      .about-section,
+      .video-showcase,
+      .process-section,
+      .resume-section,
+      .contact-section { padding: clamp(48px, 6vw, 80px) 24px !important; }
+
+      /* Hero */
+      .hero-content { gap: clamp(24px, 4vw, 48px) !important; }
+      .hero-title { font-size: clamp(24px, 4.6vw, 56px) !important; line-height: 1.05 !important; }
+      .hero-subtitle { font-size: clamp(14px, 2vw, 18px) !important; letter-spacing: 1.2px !important; }
+      .hero-image { height: clamp(260px, 36vw, 400px) !important; }
+
+      /* Big headings */
+      .project-title,
+      .section-title,
+      .books-title,
+      .github-projects-title,
+      .process-title,
+      .resume-title,
+      .contact-title { font-size: clamp(24px, 4.5vw, 50px) !important; }
+
+      /* Cards and grids */
+      .project-card-image { height: 200px !important; }
+      .projects-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 24px !important; }
+      .video-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 28px !important; }
+      .books-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important; gap: 24px !important; }
+      .github-repos { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 24px !important; }
+
+      /* Media blocks */
+      .project-image,
+      .about-image { height: clamp(240px, 36vw, 380px) !important; }
+
+      /* Header tweaks */
+      .logo { font-size: 20px !important; }
+      .nav { gap: 24px !important; }
+
+      /* Buttons and social */
+      .btn-primary, .btn-secondary { padding: 10px 18px !important; font-size: 12px !important; }
+      .social-link { width: 48px !important; height: 48px !important; font-size: 20px !important; }
+
+      /* Mobile specific tightening */
+      @media (max-width: 768px) {
+        .hero { padding: 0 20px !important; }
+        .header { padding: 12px 16px !important; }
+        .about-3d-content { padding: 16px 20px !important; }
+        .cta-card { width: 100% !important; }
+        .project-card-content { padding: 18px !important; }
+        .book-card, .poetry-card { padding: 20px !important; }
+        .process-step { padding: 28px 16px !important; }
+        .resume-grid { gap: 20px !important; }
+      }
+
+      /* Medium screens */
+      @media (max-width: 1200px) {
+        .header-content { padding: 0 8px; }
+      }
+    </style>
 </head>
 <body>
     <!-- GSAP Sections: Parallax Hero, Breakdown, Image Reveal, Text Mask Video -->
@@ -2515,6 +2592,8 @@
         <p>Shawn Mutogo © 2024 | Privacy & Cookies</p>
     </footer>
 
+    <!-- Optional config override for API base URL -->
+    <script src="config.js"></script>
     <!-- Loading Effects Script -->
     <script src="js/loading-effects.js"></script>
     <!-- API Client for dynamic data loading -->
