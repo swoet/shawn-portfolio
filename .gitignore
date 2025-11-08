@@ -2,10 +2,10 @@ node_modules/
 .next/
 out/
 dist/
-# .env files are now visible for development
-# .env
-# .env.*
-# !.env.example
+# .env files should not be committed
+.env
+.env.*
+!.env.example
 .vercel/
 .render/
 .cache/
