@@ -143,7 +143,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json(formattedProject, { headers: CORS_HEADERS });
   } catch (error) {
     console.error('Error updating project:', error);
-    if (error.code === 'P2025') {
+    if (error && typeof error === 'object' && 'code' in error && (error as any).code === 'P2025') {
       return NextResponse.json({ error: 'Project not found' }, { status: 404, headers: CORS_HEADERS });
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
@@ -176,9 +176,9 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ message: 'Project deleted successfully' }, { headers: CORS_HEADERS });
   } catch (error) {
     console.error('Error deleting project:', error);
-    if (error.code === 'P2025') {
-      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    if (error && typeof error === 'object' && 'code' in error && (error as any).code === 'P2025') {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404, headers: CORS_HEADERS });
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500, headers: CORS_HEADERS });
   }
 }
