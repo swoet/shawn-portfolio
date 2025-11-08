@@ -2024,6 +2024,12 @@
         .header-content { padding: 0 8px; }
       }
     </style>
+    <style>
+      /* Make the image sections clearer (no crop) */
+      .final-shot, .reveal-image { object-fit: contain !important; max-height: clamp(280px, 48vw, 560px); width: 100%; }
+      /* Tame the case visual height across screens */
+      .case-visual { min-height: clamp(240px, 28vw, 320px) !important; }
+    </style>
 </head>
 <body>
     <!-- GSAP Sections: Parallax Hero, Breakdown, Image Reveal, Text Mask Video -->
