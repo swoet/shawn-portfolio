@@ -20,16 +20,12 @@ export async function GET(request: NextRequest) {
 
     let projects;
     if (featured === 'true') {
-      // Get featured projects (those marked as featured or most recent ones)
+      // Get featured projects (those marked as featured)
       projects = await prisma.project.findMany({
         where: {
-          OR: [
-            { featured: true },
-            { featured: null } // Include projects where featured is not set
-          ]
+          featured: true
         },
         orderBy: [
-          { featured: 'desc' }, // Featured projects first
           { updated_at: 'desc' }
         ],
         take: limit ? parseInt(limit) : undefined
