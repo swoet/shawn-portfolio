@@ -4,10 +4,18 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 // Temporary placeholder for icons
-const Folder = () => <div className="w-5 h-5 bg-blue-400 rounded"></div>;
-const Video = () => <div className="w-5 h-5 bg-purple-400 rounded"></div>;
-const FileText = () => <div className="w-5 h-5 bg-green-400 rounded"></div>;
-const RefreshCw = ({ className }: { className?: string }) => <div className={`w-4 h-4 bg-white rounded ${className}`}></div>;
+const Folder = ({ className }: { className?: string }) => (
+  <div className={`w-5 h-5 bg-blue-400 rounded ${className || ""}`}></div>
+);
+const Video = ({ className }: { className?: string }) => (
+  <div className={`w-5 h-5 bg-purple-400 rounded ${className || ""}`}></div>
+);
+const FileText = ({ className }: { className?: string }) => (
+  <div className={`w-5 h-5 bg-green-400 rounded ${className || ""}`}></div>
+);
+const RefreshCw = ({ className }: { className?: string }) => (
+  <div className={`w-4 h-4 bg-white rounded ${className || ""}`}></div>
+);
 
 interface Stats {
   projects: number;
